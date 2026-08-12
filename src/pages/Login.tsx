@@ -5,12 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Phone, ArrowRight, HelpCircle, ChevronDown, X, Shield, FileText } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Input }  from '../components/ui/Input'
+import { PharmaAiIcon } from '../components/PharmaAiIcon'
 import { useLangStore } from '../stores/langStore'
 import { useAuthStore } from '../stores/authStore'
 import type { Lang } from '../i18n/translations'
 
 const LANGUAGES: { code: Lang; label: string; flag: string }[] = [
   { code: 'UZ', label: "O'zbek", flag: '🇺🇿' },
+  { code: 'OZ', label: 'Ўзбек',  flag: '🇺🇿' },
   { code: 'RU', label: 'Русский', flag: '🇷🇺' },
   { code: 'EN', label: 'English', flag: '🇬🇧' },
 ]
@@ -57,17 +59,8 @@ export const Login: React.FC = () => {
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] relative overflow-hidden px-6 justify-between py-8 transition-colors duration-200">
       {/* TOP HEADER LAYOUT */}
       <div className="relative z-10 flex items-center justify-between">
-        {/* LEFT side: Brand Name & Logo */}
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center shadow-xs">
-            <svg width="16" height="16" viewBox="0 0 48 48" fill="none">
-              <path d="M24 8C24 8 12 16 12 28C12 34.627 17.373 40 24 40C30.627 40 36 34.627 36 28C36 16 24 8 24 8Z" fill="white" />
-            </svg>
-          </div>
-          <span className="text-base font-extrabold text-slate-900 dark:text-white">
-            Pharma<span className="text-emerald-600 dark:text-emerald-400">AI</span>
-          </span>
-        </div>
+        {/* LEFT side: Standalone PharmaAI Capsule/Network Icon */}
+        <PharmaAiIcon className="w-12 h-12" />
 
         {/* RIGHT side: Language dropdown selector + Help Pill Button */}
         <div className="flex items-center gap-2">

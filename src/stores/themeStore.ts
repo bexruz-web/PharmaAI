@@ -11,7 +11,7 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
-      isDark: true,
+      isDark: false, // Default to LIGHT MODE globally on initial launch
       toggleTheme: () => {
         const newVal = !get().isDark
         set({ isDark: newVal })
@@ -34,6 +34,6 @@ export const useThemeStore = create<ThemeState>()(
         }
       },
     }),
-    { name: 'pharma-theme-v2' }
+    { name: 'pharma-theme-v3' }
   )
 )

@@ -264,8 +264,8 @@ export const Onboarding: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] overflow-hidden relative justify-between py-6 px-6 transition-colors duration-200">
-      {/* Header Skip Button */}
-      <div className="relative z-10 flex justify-end h-10">
+      {/* Header Skip Button (No logo on onboarding flow) */}
+      <div className="relative z-10 flex items-center justify-end h-10">
         {current < SLIDES.length - 1 && (
           <motion.button
             initial={{ opacity: 0 }}

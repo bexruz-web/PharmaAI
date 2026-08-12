@@ -13,6 +13,7 @@ import type { Lang }     from '../i18n/translations'
 
 const LANGUAGES: { code: Lang; flag: string }[] = [
   { code: 'UZ', flag: '🇺🇿' },
+  { code: 'OZ', flag: '🇺🇿' },
   { code: 'RU', flag: '🇷🇺' },
   { code: 'EN', flag: '🇬🇧' },
 ]

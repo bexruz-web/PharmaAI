@@ -1,5 +1,5 @@
 // src/i18n/translations.ts
-export type Lang = 'UZ' | 'RU' | 'EN'
+export type Lang = 'UZ' | 'OZ' | 'RU' | 'EN'
 
 export interface Translations {
   // Language select
@@ -103,7 +103,7 @@ const uz: Translations = {
   appSubtitle: 'Aqlli Dorixona Platformasi',
 
   skip: "O'tkazib yuborish",
-  next: 'Keyingisi',
+  next: 'Davom etish',
   getStarted: 'Boshlash',
   letsStart: 'Boshladik!',
   slide1Title: "Dorilarni topish va narxini solishtirish",
@@ -183,13 +183,99 @@ const uz: Translations = {
   orders: 'Buyurtmalarim',
 }
 
+const oz: Translations = {
+  chooseLanguage: 'Тилни танланг',
+  languageSubtitle: 'Иловадан фойдаланиш учун қулай тилингизни танланг',
+  appSubtitle: 'Ақлли Дорихона Платформаси',
+
+  skip: 'Ўтказиб юбориш',
+  next: 'Давом этиш',
+  getStarted: 'Бошлаш',
+  letsStart: 'Бошладик!',
+  slide1Title: "Дориларни топиш ва нархини солиштириш",
+  slide1Desc: "Яқин дорихоналардаги захирани кўринг.",
+  slide2Title: "Сканер ва Овозли ёрдамчи",
+  slide2Desc: "Рецептни суратга олинг ва қўлланмани тингланг.",
+  slide3Title: "Уйга етказиш ва Тезкор бронь",
+  slide3Desc: "Тиббий воситаларни буюртма қилинг.",
+
+  welcome: 'Хуш келибсиз!',
+  loginTitle: 'Тизимга кириш',
+  loginSubtitle: 'Телефон рақамингизни киритинг ва SMS код орқали киринг',
+  phoneLabel: 'Телефон рақам',
+  phonePlaceholder: '__ ___ __ __',
+  loginBtn: 'SMS код олиш',
+  otpTitle: 'Кодни тасдиқланг',
+  otpSubtitle: "Телефон рақамингизга юборилган 4 хонали кодни киритинг",
+  otpVerify: 'Тасдиқлаш',
+  otpResend: 'Қайта юбориш',
+  otpError: "Нотўғри код ёки коднинг амал қилиш муддати тугаган",
+  phoneError: "Телефон рақамингизни тўлиқ киритинг.",
+  help: 'Ёрдам',
+  termsOfUse: 'Фойдаланиш шартлари',
+  privacyPolicy: 'Махфийлик сиёсати',
+  termsTitle: 'Фойдаланиш шартлари ва келишув',
+  termsContent: "PharmaAI платформасидан фойдаланиш орқали сиз барча шарт ва қоидаларга розилик билдирасиз.",
+  privacyTitle: 'Махфийлик ва маълумотлар хавфсизлиги',
+  privacyContent: "Биз сизнинг шахсий маълумотларингиз хавфсизлигини таъминлаш учун замонавий шифрлаш технологияларидан фойдаланамиз.",
+
+  selectLocation: 'Жойлашувни танланг',
+  location: 'Тошкент, Юнусобод',
+
+  home: 'Асосий',
+  map: 'Харита',
+  scan: 'Сканерлаш',
+  cart: 'Сават',
+  profile: 'Профиль',
+
+  goodMorning: 'Хайрли тонг',
+  goodAfternoon: 'Хайрли кун',
+  goodEvening: 'Хайрли кеч',
+  searchPlaceholder: 'Дори ёки дорихона қидиринг...',
+  quickActions: 'Тезкор амаллар',
+  findMedicine: 'Дори топиш',
+  findPharmacy: 'Дорихона топиш',
+  aiScan: 'AI Скан',
+  consultation: 'Маслаҳат',
+  nearbyPharmacies: 'Яқин дорихоналар',
+  seeAll: "Барчасини кўриш",
+  specialOffers: 'Махсус таклифлар',
+  open24h: '24 соат очиқ',
+  km: 'км',
+  categories: 'Категориялар',
+  popularMedicines: 'Оммабоп дорилар',
+  rxRequired: 'Рецептли (Rx)',
+  otc: 'Рецептсиз (OTC)',
+  addedToCart: 'Саватга қўшилди!',
+  noNotifications: 'Ҳозирча ҳеч қандай билдиришнома йўқ',
+  markAllAsRead: 'Барчасини ўқилган деб белгилаш',
+  savedAddresses: 'Сақланган манзиллар',
+  noResults: 'Ҳеч нарса топилмади',
+
+  mapTitle: 'Дорихоналар харитаси',
+  mapSubtitle: 'Яқин атрофингиздаги барча дорихоналар',
+
+  scanTitle: 'Рецепт Сканери',
+  scanSubtitle: "Дори ёки рецепт расмини сканерланг — AI тўлиқ маълумот беради",
+
+  cartTitle: 'Менинг саватчам',
+  cartEmpty: 'Саватча бўш',
+
+  profileTitle: 'Менинг профилим',
+  logout: 'Чиқиш',
+  darkMode: 'Тунги режим',
+  language: 'Тил',
+  notifications: 'Билдиришномалар',
+  orders: 'Буюртмаларим',
+}
+
 const ru: Translations = {
   chooseLanguage: 'Выберите язык',
   languageSubtitle: 'Выберите удобный для вас язык для начала работы',
   appSubtitle: 'Умная аптечная платформа',
 
   skip: 'Пропустить',
-  next: 'Далее',
+  next: 'Продолжить',
   getStarted: 'Начать',
   letsStart: 'Начнем!',
   slide1Title: "Поиск лекарств и сравнение цен",
@@ -215,9 +301,9 @@ const ru: Translations = {
   termsOfUse: 'Условия использования',
   privacyPolicy: 'Политика конфиденциальности',
   termsTitle: 'Условия использования и соглашение',
-  termsContent: "Используя платформу PharmaAI, вы соглашаетесь со всеми условиями и правилами. Поиск и бронирование лекарств носят исключительно информационно-справочный характер. При получении рецептурных препаратов необходимо предъявить рецепт от врача.",
+  termsContent: "Используя платформу PharmaAI, вы соглашаетесь со всеми условиями и правилами. Поиск и бронирование лекарств носят исключительно информационно-справочный характер.",
   privacyTitle: 'Конфиденциальность и безопасность',
-  privacyContent: "Мы используем современные технологии шифрования для обеспечения безопасности ваших личных данных (имени и номера телефона). Данные платформы не передаются третьим лицам и используются исключительно для улучшения качества обслуживания.",
+  privacyContent: "Мы используем современные технологии шифрования для обеспечения безопасности ваших личных данных.",
 
   selectLocation: 'Выбрать локацию',
   location: 'Ташкент, Юнусабад',
@@ -275,7 +361,7 @@ const en: Translations = {
   appSubtitle: 'Smart Pharmacy Platform',
 
   skip: 'Skip',
-  next: 'Next',
+  next: 'Continue',
   getStarted: 'Get Started',
   letsStart: "Let's start!",
   slide1Title: "Find Medicines & Compare Prices",
@@ -301,9 +387,9 @@ const en: Translations = {
   termsOfUse: 'Terms of Use',
   privacyPolicy: 'Privacy Policy',
   termsTitle: 'Terms of Use & Agreement',
-  termsContent: "By using the PharmaAI platform, you agree to all terms and conditions. The search and booking of medicines are strictly for information and search purposes. Prescription medicines require a doctor's prescription upon pickup.",
+  termsContent: "By using the PharmaAI platform, you agree to all terms and conditions.",
   privacyTitle: 'Privacy & Data Security',
-  privacyContent: "We use modern encryption technologies to ensure the safety of your personal data (name and phone number). Platform data is not shared with third parties and is used solely to improve service quality.",
+  privacyContent: "We use modern encryption technologies to ensure the safety of your personal data.",
 
   selectLocation: 'Select Location',
   location: 'Tashkent, Yunusobod',
@@ -355,5 +441,4 @@ const en: Translations = {
   orders: 'My Orders',
 }
 
-export const translations: Record<Lang, Translations> = { UZ: uz, RU: ru, EN: en }
-
+export const translations: Record<Lang, Translations> = { UZ: uz, OZ: oz, RU: ru, EN: en }

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PharmaAI - Tilni tanlash (Language Selection)</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f1f5f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-center;
+      min-height: 100vh;
+    }
+
+    /* Fixed 720px Height Slide Container */
+    .slide-container {
+      width: 100%;
+      max-width: 1280px;
+      height: 720px;
+      max-height: 720px;
+      background: #f8fafc;
+      border-radius: 28px;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
+      border: 1px solid #e2e8f0;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 44px 64px 36px 64px;
+      position: relative;
+    }
+
+    /* 1. Brand Logo Container */
+    .brand-logo-wrapper {
+      margin-bottom: 40px; /* Logo -> Title distance */
+      display: flex;
+      justify-content: center;
+    }
+
+    .brand-icon-box {
+      width: 76px;
+      height: 76px;
+      border-radius: 24px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 2. Main Title Typography */
+    .main-lang-title {
+      font-size: 64px;
+      line-height: 1.1;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.03em;
+      text-align: center;
+      margin: 0;
+      margin-bottom: 28px; /* Title -> Subtitle distance */
+    }
+
+    /* 3. Main Subtitle Typography */
+    .main-lang-subtitle {
+      font-size: 28px;
+      line-height: 1.35;
+      font-weight: 500;
+      color: #64748b;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 54px auto; /* Subtitle -> Grid distance */
+    }
+
+    /* 4. Language Cards Grid */
+    .langs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .lang-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 24px;
+      border-radius: 20px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      user-select: none;
+    }
+
+    .lang-card:hover {
+      border-color: #94a3b8;
+      transform: translateY(-2px);
+    }
+
+    .lang-card.selected {
+      border: 2px solid #10b981;
+      background: #ecfdf5;
+      color: #065f46;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+    }
+
+    .lang-flag {
+      font-size: 32px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .lang-label {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      flex: 1;
+    }
+
+    .lang-card.selected .lang-label {
+      color: #065f46;
+    }
+
+    .check-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    /* Footer Action Button */
+    .slide-footer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding-top: 16px;
+    }
+
+    .btn-continue {
+      width: 100%;
+      max-width: 380px;
+      height: 58px;
+      border-radius: 18px;
+      background: #10b981;
+      color: white;
+      font-size: 18px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-continue:hover {
+      background: #059669;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide 1: Fixed 720px Container -->
+  <div class="slide-container">
+    
+    <!-- Top Content Group -->
+    <div>
+      <!-- 1. Brand Logo Container (margin-bottom: 40px) -->
+      <div class="brand-logo-wrapper">
+        <div class="brand-icon-box">
+          <img src="/assets/capsule-icon.png" alt="PharmaAI Icon" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+      </div>
+
+      <!-- 2. Main Title (font-size: 64px, margin-bottom: 28px) -->
+      <h1 class="main-lang-title">Tilni tanlang</h1>
+
+      <!-- 3. Main Subtitle (font-size: 28px, margin-bottom: 54px) -->
+      <p class="main-lang-subtitle">
+        Ilovadan foydalanish uchun qulay tilingizni tanlang
+      </p>
+
+      <!-- 4. 4 Languages Grid -->
+      <div class="langs-grid">
+        <!-- O'zbek (Lotin) - Selected -->
+        <div class="lang-card selected" onclick="selectLang(this)">
+          <span class="lang-flag">🇺🇿</span>
+          <span class="lang-label">O'zbek</span>
+          <div class="check-badge">
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+              <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Ўзбек (Кирилл) -->
+        <div class="lang-card" onclick="selectLang(this)">
+          <span class="lang-flag">🇺🇿</span>
+          <span class="lang-label">Ўзбек</span>
+        </div>
+
+        <!-- Русский -->
+        <div class="lang-card" onclick="selectLang(this)">
+          <span class="lang-flag">🇷🇺</span>
+          <span class="lang-label">Русский</span>
+        </div>
+
+        <!-- English -->
+        <div class="lang-card" onclick="selectLang(this)">
+          <span class="lang-flag">🇬🇧</span>
+          <span class="lang-label">English</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide Footer -->
+    <div class="slide-footer">
+      <button class="btn-continue">Davom etish</button>
+    </div>
+
+  </div>
+
+  <script>
+    function selectLang(card) {
+      document.querySelectorAll('.lang-card').forEach(c => {
+        c.classList.remove('selected');
+        const badge = c.querySelector('.check-badge');
+        if (badge) badge.remove();
+      });
+
+      card.classList.add('selected');
+      const badge = document.createElement('div');
+      badge.className = 'check-badge';
+      badge.innerHTML = '<svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      card.appendChild(badge);
+    }
+  </script>
+
+</body>
+</html>

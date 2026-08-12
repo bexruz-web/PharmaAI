@@ -1,6 +1,7 @@
 // src/stores/langStore.ts
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import i18n from '../i18n/config'
 import { type Lang, translations, type Translations } from '../i18n/translations'
 
 interface LangState {
@@ -17,8 +18,14 @@ export const useLangStore = create<LangState>()(
       lang: 'UZ',
       t: translations['UZ'],
       isLangSelected: false,
-      setLang: (lang) =>
-        set({ lang, t: translations[lang] }),
+      setLang: (lang) => {
+        const codeLower = lang.toLowerCase()
+        i18n.changeLanguage(codeLower)
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('pharma-locale', codeLower)
+        }
+        set({ lang, t: translations[lang] })
+      },
       markLangSelected: () =>
         set({ isLangSelected: true }),
     }),
