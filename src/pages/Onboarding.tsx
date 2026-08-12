@@ -29,52 +29,20 @@ const DrugScannerMockupIllustration = () => (
   </div>
 )
 
-// Step 2 Illustration: Prescription Scanner & Voice Assistant
-const ScannerPrescription3DIllustration = () => (
-  <svg width="245" height="245" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
-    <defs>
-      <linearGradient id="sheetGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#FFFFFF" />
-        <stop offset="100%" stopColor="#F1F5F9" />
-      </linearGradient>
-      <linearGradient id="beamGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="rgba(16,185,129,0)" />
-        <stop offset="50%" stopColor="rgba(16,185,129,0.4)" />
-        <stop offset="100%" stopColor="#10B981" />
-      </linearGradient>
-      <filter id="shadow3dDoc" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="12" stdDeviation="10" floodColor="#0f172a" floodOpacity="0.2" />
-      </filter>
-    </defs>
-    <circle cx="120" cy="120" r="85" className="fill-slate-100 dark:fill-[#1E1E20]" filter="url(#shadow3dDoc)" />
-    <motion.g
-      animate={{ y: [-4, 4, -4] }}
-      transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-      transform="translate(65, 45)"
-      filter="url(#shadow3dDoc)"
-    >
-      <rect x="0" y="0" width="110" height="145" rx="14" fill="url(#sheetGrad)" stroke="#CBD5E1" strokeWidth="2" />
-      <rect x="15" y="16" width="30" height="30" rx="8" fill="#10B981" />
-      <path d="M24 23h12M30 17v12" stroke="white" strokeWidth="3" strokeLinecap="round" />
-      <rect x="52" y="20" width="42" height="6" rx="3" fill="#94A3B8" />
-      <rect x="52" y="32" width="30" height="5" rx="2.5" fill="#CBD5E1" />
-      <rect x="15" y="58" width="80" height="6" rx="3" fill="#64748B" />
-      <rect x="15" y="72" width="65" height="6" rx="3" fill="#94A3B8" />
-      <rect x="15" y="86" width="75" height="6" rx="3" fill="#94A3B8" />
-      <circle cx="80" cy="115" r="14" fill="none" stroke="#10B981" strokeWidth="2.5" strokeDasharray="3 2" />
-      <path d="M75 115l3 3 6-6" stroke="#10B981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-    </motion.g>
-    <g transform="translate(50, 40)">
-      <path d="M0 30V0h30 M110 0h30v30 M140 130v30h-30 M30 160H0v-30" stroke="#10B981" strokeWidth="4" strokeLinecap="round" />
-      <motion.g
-        animate={{ y: [10, 140, 10] }}
-        transition={{ duration: 2.8, repeat: Infinity, ease: "linear" }}
-      >
-        <rect x="0" y="-12" width="140" height="14" fill="url(#beamGrad)" opacity="0.6" />
-        <line x1="-5" y1="2" x2="145" y2="2" stroke="#10B981" strokeWidth="3.5" strokeLinecap="round" filter="drop-shadow(0 0 6px #10b981)" />
-      </motion.g>
-    </g>
-  </svg>
+// Step 2 Illustration: Audio Guide Phone Mockup with Voice Waveform Widget
+const AudioGuideMockupIllustration = () => (
+  <div className="w-full max-w-[300px] sm:max-w-[340px] h-[255px] sm:h-[290px] flex items-center justify-center relative mx-auto overflow-visible">
+    {/* Soft ambient background glow */}
+    <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
+    <motion.img
+      src="/assets/onboarding-audio-guide.png"
+      alt="Audio Guide Mockup"
+      initial={{ scale: 0.94, y: 4 }}
+      animate={{ scale: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="w-full h-full object-contain filter drop-shadow-md select-none pointer-events-none"
+    />
+  </div>
 )
 
 // Step 3 Illustration: Fast Home Delivery Box
@@ -138,7 +106,7 @@ const SLIDES: Slide[] = [
     id: 2,
     titleKey: 'slide2Title',
     descKey:  'slide2Desc',
-    illustration: <ScannerPrescription3DIllustration />,
+    illustration: <AudioGuideMockupIllustration />,
   },
   {
     id: 3,
@@ -216,7 +184,7 @@ export const Onboarding: React.FC = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
             className="flex flex-col items-center text-center w-full max-w-sm sm:max-w-md mx-auto"
           >
-            {/* 3D Phone & ASPIRIN Box Illustration Mockup with soft floor shadows */}
+            {/* Visual Illustration Mockup with soft floor shadows */}
             <div className="mb-4 flex items-center justify-center w-full overflow-visible">
               {slide.illustration}
             </div>
@@ -234,9 +202,9 @@ export const Onboarding: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* 3. Controls (Unchanged): Centered 3 pagination dots & full-width green CTA button */}
+      {/* 3. Controls: Centered 3 pagination dots & full-width green CTA button */}
       <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto flex flex-col items-center gap-5 pt-2 shrink-0">
-        {/* 3 Pagination Dots (1st active in green) */}
+        {/* 3 Pagination Dots (Active dot highlighted in accent green) */}
         <div className="flex items-center justify-center gap-2 mb-1">
           {SLIDES.map((_, i) => (
             <motion.button
