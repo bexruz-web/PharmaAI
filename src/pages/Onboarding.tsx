@@ -13,15 +13,15 @@ interface Slide {
   illustration: React.ReactNode
 }
 
-// Step 1 Illustration: Drug Scanner & Phone Mockup with soft floor shadow
+// Step 1 Illustration: Scaled UP Drug Scanner & Phone Mockup with soft floor shadow
 const DrugScannerMockupIllustration = () => (
-  <div className="w-full max-w-[240px] sm:max-w-[270px] h-[210px] sm:h-[235px] flex items-center justify-center relative mx-auto my-1 overflow-visible">
+  <div className="w-full max-w-[280px] sm:max-w-[320px] h-[240px] sm:h-[270px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
-    <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-90" />
+    <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
     <motion.img
       src="/assets/onboarding-scanner.png"
       alt="Drug Scanner Mockup"
-      initial={{ scale: 0.92, y: 4 }}
+      initial={{ scale: 0.94, y: 4 }}
       animate={{ scale: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="w-full h-full object-contain filter drop-shadow-md select-none pointer-events-none"
@@ -31,7 +31,7 @@ const DrugScannerMockupIllustration = () => (
 
 // Step 2 Illustration: Prescription Scanner & Voice Assistant
 const ScannerPrescription3DIllustration = () => (
-  <svg width="210" height="210" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto my-1">
+  <svg width="230" height="230" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
     <defs>
       <linearGradient id="sheetGrad" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#FFFFFF" />
@@ -79,7 +79,7 @@ const ScannerPrescription3DIllustration = () => (
 
 // Step 3 Illustration: Fast Home Delivery Box
 const FastDeliveryBox3DIllustration = () => (
-  <svg width="210" height="210" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto my-1">
+  <svg width="230" height="230" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
     <defs>
       <linearGradient id="boxFront" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#334155" />
@@ -157,7 +157,6 @@ export const Onboarding: React.FC = () => {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(1)
 
-  // Use i18n hook first with fallback to store translations
   const translate = (key: string) => tI18n(key) || (tStore as any)[key] || key
 
   const goTo = (index: number) => {
@@ -188,9 +187,24 @@ export const Onboarding: React.FC = () => {
   }
 
   return (
-    <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] overflow-hidden relative justify-between py-6 px-6 transition-colors duration-200">
-      {/* Top Container Frame & Visual Image Area */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center pt-2">
+    <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] overflow-hidden relative justify-between pt-4 pb-6 px-6 transition-colors duration-200">
+      {/* 1. Top Header: Skip text button on the Top-Right Corner in brand green */}
+      <div className="relative z-20 flex items-center justify-end h-10 w-full max-w-sm sm:max-w-md mx-auto">
+        {current < SLIDES.length - 1 && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleSkip}
+            className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-extrabold px-3 py-1.5 btn-touch transition-colors"
+          >
+            {translate('skip')}
+          </motion.button>
+        )}
+      </div>
+
+      {/* 2 & 3. Central Image Container & Text Layout */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-start pt-1">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={current}
@@ -200,19 +214,19 @@ export const Onboarding: React.FC = () => {
             animate="center"
             exit="exit"
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="flex flex-col items-center text-center w-full max-w-sm mx-auto"
+            className="flex flex-col items-center text-center w-full max-w-sm sm:max-w-md mx-auto"
           >
-            {/* Top Image Container Frame */}
-            <div className="mb-5 flex items-center justify-center w-full overflow-visible">
+            {/* Image Container shifted higher up and scaled UP */}
+            <div className="mb-3 flex items-center justify-center w-full overflow-visible">
               {slide.illustration}
             </div>
 
-            {/* Text & Localization Block directly below image container with clean padding */}
-            <div className="px-4 flex flex-col items-center">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2 text-balance leading-snug tracking-tight">
+            {/* Typography Block: Prominent Title & Expanded Subtitle container */}
+            <div className="w-full max-w-sm sm:max-w-md px-2 flex flex-col items-center">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-3 text-center leading-tight tracking-tight">
                 {translate(slide.titleKey)}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-xs text-balance">
+              <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed text-center w-full max-w-xs sm:max-w-sm">
                 {translate(slide.descKey)}
               </p>
             </div>
@@ -220,9 +234,9 @@ export const Onboarding: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Bottom UI Controls Container */}
-      <div className="relative z-10 w-full max-w-sm mx-auto flex flex-col gap-4 pt-3">
-        {/* Active Pagination Indicator: 3 dots, 1st active accent green */}
+      {/* 4. Bottom Layout & Controls */}
+      <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto flex flex-col items-center gap-5 pt-2">
+        {/* Active Pagination Indicator: 3 dots, 1st dot active green */}
         <div className="flex items-center justify-center gap-2 mb-1">
           {SLIDES.map((_, i) => (
             <motion.button
@@ -238,34 +252,22 @@ export const Onboarding: React.FC = () => {
           ))}
         </div>
 
-        {/* Bottom Navigation Actions Row */}
-        <div className="flex items-center justify-between w-full px-1">
-          {/* Skip Action: Muted text button on bottom-left */}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={handleSkip}
-            className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 text-sm font-semibold py-2 px-1 btn-touch transition-colors"
-          >
-            {translate('skip')}
-          </motion.button>
-
-          {/* Primary Action: Accent green button "Keyingisi" / Next on bottom-right */}
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={handleNext}
-            className="
-              px-6 h-12 rounded-xl font-extrabold text-sm text-white
-              bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800
-              transition-all duration-150 flex items-center justify-center gap-2
-              shadow-md shadow-emerald-600/20 btn-touch
-            "
-          >
-            <span>{current === SLIDES.length - 1 ? translate('letsStart') : translate('next')}</span>
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-              <path d="M7.5 5L12.5 10L7.5 15" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </motion.button>
-        </div>
+        {/* Main Full-Width Stretched CTA Button ("Keyingisi") */}
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={handleNext}
+          className="
+            w-full h-14 rounded-2xl font-extrabold text-base text-white
+            bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800
+            transition-all duration-150 flex items-center justify-center gap-2
+            shadow-md shadow-emerald-600/25 btn-touch
+          "
+        >
+          <span>{current === SLIDES.length - 1 ? translate('letsStart') : translate('next')}</span>
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 5L12.5 10L7.5 15" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </motion.button>
       </div>
     </div>
   )
