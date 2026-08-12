@@ -128,20 +128,20 @@ export const Onboarding: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] overflow-hidden relative justify-between pt-4 pb-6 px-6 transition-colors duration-200">
-      {/* 1. Top Header Layout: Skip text button on left & Branded Boxed Logo Component on top-right */}
-      <div className="relative z-20 flex items-center justify-between h-10 w-full max-w-sm sm:max-w-md mx-auto shrink-0">
-        {/* Left: Green "O'tkazib yuborish" Skip action */}
+      {/* 1. Top Header: Larger Boxed Logo on TOP-LEFT & Skip text button restored to TOP-RIGHT across Screens 1, 2, 3 */}
+      <div className="relative z-20 flex items-center justify-between h-12 w-full max-w-sm sm:max-w-md mx-auto shrink-0">
+        {/* TOP-LEFT: Larger Boxed Logo Component matching Language Selection style */}
+        <div className="w-[46px] h-[46px] sm:w-[50px] sm:h-[50px] rounded-2xl bg-slate-100/90 dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center justify-center p-2 shadow-xs">
+          <PharmaAiIcon className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
+        </div>
+
+        {/* TOP-RIGHT: Restored Green "O'tkazib yuborish" Skip text button */}
         <button
           onClick={handleSkip}
           className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-extrabold py-1.5 btn-touch transition-colors"
         >
           {translate('skip')}
         </button>
-
-        {/* Right: Top-Right Header Boxed Logo Component (Chip/Badge style with subtle border & padding) */}
-        <div className="w-9 h-9 rounded-xl bg-slate-100/90 dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center justify-center p-1.5 shadow-xs">
-          <PharmaAiIcon className="w-6 h-6 object-contain" />
-        </div>
       </div>
 
       {/* 2. Central Content Block */}

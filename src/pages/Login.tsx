@@ -59,7 +59,12 @@ export const Login: React.FC = () => {
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] relative overflow-hidden px-6 justify-between py-8 transition-colors duration-200">
       {/* TOP HEADER LAYOUT */}
       <div className="relative z-10 flex items-center justify-between">
-        {/* LEFT side: Language dropdown selector + Help Pill Button */}
+        {/* TOP-LEFT: Larger Boxed Logo Component matching Language Selection & Onboarding screens */}
+        <div className="w-[46px] h-[46px] sm:w-[50px] sm:h-[50px] rounded-2xl bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center justify-center p-2 shadow-xs">
+          <PharmaAiIcon className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
+        </div>
+
+        {/* TOP-RIGHT: Language dropdown selector + Help Pill Button */}
         <div className="flex items-center gap-2">
           {/* Language dropdown selector showing current language flag + code */}
           <div className="relative">
@@ -82,7 +87,7 @@ export const Login: React.FC = () => {
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute left-0 mt-2 w-28 rounded-2xl bg-white dark:bg-[#1E1E20] border border-slate-200 dark:border-zinc-800 p-1.5 z-40 shadow-lg"
+                    className="absolute right-0 mt-2 w-28 rounded-2xl bg-white dark:bg-[#1E1E20] border border-slate-200 dark:border-zinc-800 p-1.5 z-40 shadow-lg"
                   >
                     {LANGUAGES.map((l) => (
                       <button
@@ -113,11 +118,6 @@ export const Login: React.FC = () => {
             <HelpCircle size={14} className="text-emerald-600 dark:text-emerald-400" />
             <span>{t.help}</span>
           </button>
-        </div>
-
-        {/* RIGHT side: Top-Right Header Boxed Logo Component (Matching Onboarding Screens) */}
-        <div className="w-9 h-9 rounded-xl bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center justify-center p-1.5 shadow-xs">
-          <PharmaAiIcon className="w-6 h-6 object-contain" />
         </div>
       </div>
 
