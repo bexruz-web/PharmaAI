@@ -59,9 +59,9 @@ export const Login: React.FC = () => {
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] relative overflow-hidden px-6 justify-between py-8 transition-colors duration-200">
       {/* TOP HEADER LAYOUT */}
       <div className="relative z-10 flex items-center justify-between">
-        {/* TOP-LEFT: Larger Boxed Logo Component matching Language Selection & Onboarding screens */}
-        <div className="w-[46px] h-[46px] sm:w-[50px] sm:h-[50px] rounded-2xl bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center justify-center p-2 shadow-xs">
-          <PharmaAiIcon className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
+        {/* TOP-LEFT: Scaled UP Boxed Logo Component */}
+        <div className="w-[54px] h-[54px] sm:w-[58px] sm:h-[58px] rounded-2xl bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center justify-center p-2.5 shadow-xs">
+          <PharmaAiIcon className="w-9 h-9 sm:w-10 sm:h-10 object-contain" />
         </div>
 
         {/* TOP-RIGHT: Language dropdown selector + Help Pill Button */}
@@ -168,13 +168,6 @@ export const Login: React.FC = () => {
             {t.loginBtn}
           </Button>
         </form>
-
-        {/* Demo Hint */}
-        <div className="mt-8 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 text-center">
-          <p className="text-xs text-emerald-800 dark:text-emerald-300 font-medium leading-relaxed">
-            🔐 Demo kirish • OTP tasdiqlash kodi: <span className="font-extrabold">1234</span>
-          </p>
-        </div>
       </div>
 
       {/* BOTTOM FOOTER */}
