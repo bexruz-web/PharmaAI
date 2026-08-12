@@ -59,10 +59,7 @@ export const Login: React.FC = () => {
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] relative overflow-hidden px-6 justify-between py-8 transition-colors duration-200">
       {/* TOP HEADER LAYOUT */}
       <div className="relative z-10 flex items-center justify-between">
-        {/* LEFT side: Standalone PharmaAI Capsule/Network Icon */}
-        <PharmaAiIcon className="w-12 h-12" />
-
-        {/* RIGHT side: Language dropdown selector + Help Pill Button */}
+        {/* LEFT side: Language dropdown selector + Help Pill Button */}
         <div className="flex items-center gap-2">
           {/* Language dropdown selector showing current language flag + code */}
           <div className="relative">
@@ -85,7 +82,7 @@ export const Login: React.FC = () => {
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-28 rounded-2xl bg-white dark:bg-[#1E1E20] border border-slate-200 dark:border-zinc-800 p-1.5 z-40 shadow-lg"
+                    className="absolute left-0 mt-2 w-28 rounded-2xl bg-white dark:bg-[#1E1E20] border border-slate-200 dark:border-zinc-800 p-1.5 z-40 shadow-lg"
                   >
                     {LANGUAGES.map((l) => (
                       <button
@@ -108,7 +105,7 @@ export const Login: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* Help Block: Grouped inside single rounded pill button -> opens Telegram directly */}
+          {/* Help Block: Grouped inside single rounded pill button */}
           <button
             onClick={() => window.open('https://t.me/web_bekxruzme', '_blank', 'noopener,noreferrer')}
             className="flex items-center gap-1.5 h-9 px-3 rounded-full bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-emerald-600 shadow-xs btn-touch"
@@ -116,6 +113,11 @@ export const Login: React.FC = () => {
             <HelpCircle size={14} className="text-emerald-600 dark:text-emerald-400" />
             <span>{t.help}</span>
           </button>
+        </div>
+
+        {/* RIGHT side: Top-Right Header Boxed Logo Component (Matching Onboarding Screens) */}
+        <div className="w-9 h-9 rounded-xl bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center justify-center p-1.5 shadow-xs">
+          <PharmaAiIcon className="w-6 h-6 object-contain" />
         </div>
       </div>
 

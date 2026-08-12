@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useLangStore } from '../stores/langStore'
 import { useAuthStore } from '../stores/authStore'
+import { PharmaAiIcon } from '../components/PharmaAiIcon'
 
 interface Slide {
   id: number
@@ -13,7 +14,7 @@ interface Slide {
   illustration: React.ReactNode
 }
 
-// Step 1 Illustration: 3D Phone scanning ASPIRIN box (Enlarged by 2 scale steps)
+// Step 1 Illustration: 3D Phone scanning ASPIRIN box (Enlarged scale)
 const DrugScannerMockupIllustration = () => (
   <div className="w-full max-w-[370px] sm:max-w-[430px] h-[315px] sm:h-[365px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
@@ -26,7 +27,7 @@ const DrugScannerMockupIllustration = () => (
   </div>
 )
 
-// Step 2 Illustration: Audio Guide Phone Mockup with Voice Waveform Widget (Enlarged by 2 scale steps)
+// Step 2 Illustration: Audio Guide Phone Mockup with Voice Waveform Widget
 const AudioGuideMockupIllustration = () => (
   <div className="w-full max-w-[370px] sm:max-w-[430px] h-[315px] sm:h-[365px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
@@ -39,7 +40,7 @@ const AudioGuideMockupIllustration = () => (
   </div>
 )
 
-// Step 3 Illustration: Pharma AI Chat Phone Mockup (Enlarged by 2 scale steps)
+// Step 3 Illustration: Pharma AI Chat Phone Mockup
 const ChatMockupIllustration = () => (
   <div className="w-full max-w-[370px] sm:max-w-[430px] h-[315px] sm:h-[365px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
@@ -127,17 +128,23 @@ export const Onboarding: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] overflow-hidden relative justify-between pt-4 pb-6 px-6 transition-colors duration-200">
-      {/* 1. Top Header: Green text button "O'tkazib yuborish" explicitly present on ALL screens (1, 2, and 3) */}
-      <div className="relative z-20 flex items-center justify-end h-10 w-full max-w-sm sm:max-w-md mx-auto shrink-0">
+      {/* 1. Top Header Layout: Skip text button on left & Branded Boxed Logo Component on top-right */}
+      <div className="relative z-20 flex items-center justify-between h-10 w-full max-w-sm sm:max-w-md mx-auto shrink-0">
+        {/* Left: Green "O'tkazib yuborish" Skip action */}
         <button
           onClick={handleSkip}
-          className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-extrabold px-3 py-1.5 btn-touch transition-colors"
+          className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-extrabold py-1.5 btn-touch transition-colors"
         >
           {translate('skip')}
         </button>
+
+        {/* Right: Top-Right Header Boxed Logo Component (Chip/Badge style with subtle border & padding) */}
+        <div className="w-9 h-9 rounded-xl bg-slate-100/90 dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center justify-center p-1.5 shadow-xs">
+          <PharmaAiIcon className="w-6 h-6 object-contain" />
+        </div>
       </div>
 
-      {/* 2. Central Content Block: Enlarged central illustrations (scaled UP by 2 steps) & centered typography */}
+      {/* 2. Central Content Block */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center pt-2 pb-2">
         <AnimatePresence custom={direction} mode="wait" initial={false}>
           <motion.div
@@ -150,7 +157,7 @@ export const Onboarding: React.FC = () => {
             transition={{ duration: 0.18, ease: [0.25, 1, 0.5, 1] }}
             className="flex flex-col items-center text-center w-full max-w-sm sm:max-w-md mx-auto"
           >
-            {/* Visual Illustration Mockup (Enlarged by 2 scale steps) */}
+            {/* Visual Illustration Mockup */}
             <div className="mb-3 flex items-center justify-center w-full overflow-visible">
               {slide.illustration}
             </div>
@@ -170,7 +177,7 @@ export const Onboarding: React.FC = () => {
 
       {/* 3. Controls: Centered 3 pagination dots & full-width green CTA button */}
       <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto flex flex-col items-center gap-5 pt-2 shrink-0">
-        {/* 3 Pagination Dots (Active dot highlighted in accent green) */}
+        {/* 3 Pagination Dots */}
         <div className="flex items-center justify-center gap-2 mb-1">
           {SLIDES.map((_, i) => (
             <button
@@ -183,7 +190,7 @@ export const Onboarding: React.FC = () => {
           ))}
         </div>
 
-        {/* Full-width rounded green CTA button ("Keyingisi >" for steps 1-2, "Boshlash >" for step 3) */}
+        {/* Full-width rounded green CTA button */}
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={handleNext}
