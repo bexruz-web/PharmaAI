@@ -13,9 +13,9 @@ interface Slide {
   illustration: React.ReactNode
 }
 
-// Step 1 Illustration: Scaled UP Drug Scanner & Phone Mockup with soft floor shadow
+// Step 1 Illustration: Slightly ENLARGED Drug Scanner & Phone Mockup with soft floor shadow
 const DrugScannerMockupIllustration = () => (
-  <div className="w-full max-w-[280px] sm:max-w-[320px] h-[240px] sm:h-[270px] flex items-center justify-center relative mx-auto overflow-visible">
+  <div className="w-full max-w-[300px] sm:max-w-[340px] h-[255px] sm:h-[290px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
     <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
     <motion.img
@@ -31,7 +31,7 @@ const DrugScannerMockupIllustration = () => (
 
 // Step 2 Illustration: Prescription Scanner & Voice Assistant
 const ScannerPrescription3DIllustration = () => (
-  <svg width="230" height="230" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
+  <svg width="245" height="245" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
     <defs>
       <linearGradient id="sheetGrad" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#FFFFFF" />
@@ -79,7 +79,7 @@ const ScannerPrescription3DIllustration = () => (
 
 // Step 3 Illustration: Fast Home Delivery Box
 const FastDeliveryBox3DIllustration = () => (
-  <svg width="230" height="230" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
+  <svg width="245" height="245" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
     <defs>
       <linearGradient id="boxFront" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#334155" />
@@ -188,7 +188,7 @@ export const Onboarding: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] overflow-hidden relative justify-between pt-4 pb-6 px-6 transition-colors duration-200">
-      {/* 1. Top Header: Skip text button on the Top-Right Corner in brand green */}
+      {/* 1. Top Header: Green "O'tkazib yuborish" (Skip) text button on top-right */}
       <div className="relative z-20 flex items-center justify-end h-10 w-full max-w-sm sm:max-w-md mx-auto">
         {current < SLIDES.length - 1 && (
           <motion.button
@@ -203,7 +203,7 @@ export const Onboarding: React.FC = () => {
         )}
       </div>
 
-      {/* 2 & 3. Central Image Container & Text Layout */}
+      {/* 2 & 3. Central Image Container & Typography */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-start pt-1">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
@@ -216,16 +216,18 @@ export const Onboarding: React.FC = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
             className="flex flex-col items-center text-center w-full max-w-sm sm:max-w-md mx-auto"
           >
-            {/* Image Container shifted higher up and scaled UP */}
-            <div className="mb-3 flex items-center justify-center w-full overflow-visible">
+            {/* Centered Top Image Container frame (Slightly enlarged 3D illustration) */}
+            <div className="mb-2 flex items-center justify-center w-full overflow-visible">
               {slide.illustration}
             </div>
 
-            {/* Typography Block: Prominent Title & Expanded Subtitle container */}
+            {/* Typography Block */}
             <div className="w-full max-w-sm sm:max-w-md px-2 flex flex-col items-center">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-3 text-center leading-tight tracking-tight">
+              {/* Reduced font size by 1 step (text-xl sm:text-2xl), bold, dark, center-aligned */}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2 text-center leading-snug tracking-tight">
                 {translate(slide.titleKey)}
               </h2>
+              {/* Subtitle: Wide horizontal margins, center-aligned */}
               <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed text-center w-full max-w-xs sm:max-w-sm">
                 {translate(slide.descKey)}
               </p>
@@ -234,9 +236,9 @@ export const Onboarding: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* 4. Bottom Layout & Controls */}
+      {/* 4. Bottom UI Layout & Controls */}
       <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto flex flex-col items-center gap-5 pt-2">
-        {/* Active Pagination Indicator: 3 dots, 1st dot active green */}
+        {/* 3 Pagination Dots centered above CTA button (1st active green) */}
         <div className="flex items-center justify-center gap-2 mb-1">
           {SLIDES.map((_, i) => (
             <motion.button
@@ -252,7 +254,7 @@ export const Onboarding: React.FC = () => {
           ))}
         </div>
 
-        {/* Main Full-Width Stretched CTA Button ("Keyingisi") */}
+        {/* Main CTA: Full-width rounded green "Keyingisi >" button */}
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={handleNext}
