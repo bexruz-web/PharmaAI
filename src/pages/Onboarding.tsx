@@ -13,9 +13,9 @@ interface Slide {
   illustration: React.ReactNode
 }
 
-// Step 1 Illustration: 3D Phone scanning ASPIRIN box with floating '$' badge
+// Step 1 Illustration: 3D Phone scanning ASPIRIN box with soft floor shadow
 const DrugScannerMockupIllustration = () => (
-  <div className="w-full max-w-[300px] sm:max-w-[340px] h-[255px] sm:h-[290px] flex items-center justify-center relative mx-auto overflow-visible">
+  <div className="w-full max-w-[325px] sm:max-w-[365px] h-[275px] sm:h-[310px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
     <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
     <motion.img
@@ -29,9 +29,9 @@ const DrugScannerMockupIllustration = () => (
   </div>
 )
 
-// Step 2 Illustration: Audio Guide Phone Mockup with Voice Waveform Widget
+// Step 2 Illustration: Enlarged Audio Guide Phone Mockup with Seamless Soft Floor Shadow
 const AudioGuideMockupIllustration = () => (
-  <div className="w-full max-w-[300px] sm:max-w-[340px] h-[255px] sm:h-[290px] flex items-center justify-center relative mx-auto overflow-visible">
+  <div className="w-full max-w-[325px] sm:max-w-[365px] h-[275px] sm:h-[310px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
     <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
     <motion.img
@@ -47,7 +47,7 @@ const AudioGuideMockupIllustration = () => (
 
 // Step 3 Illustration: Fast Home Delivery Box
 const FastDeliveryBox3DIllustration = () => (
-  <svg width="245" height="245" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
+  <svg width="255" height="255" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
     <defs>
       <linearGradient id="boxFront" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#334155" />
@@ -171,8 +171,8 @@ export const Onboarding: React.FC = () => {
         )}
       </div>
 
-      {/* 2. Central Content Block shifted DOWNWARDS with increased top padding & breathing room */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center pt-6 sm:pt-8 pb-2">
+      {/* 2. Central Content Block: Enlarged illustration & centered typography */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center pt-5 sm:pt-7 pb-2">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={current}
@@ -184,7 +184,7 @@ export const Onboarding: React.FC = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
             className="flex flex-col items-center text-center w-full max-w-sm sm:max-w-md mx-auto"
           >
-            {/* Visual Illustration Mockup with soft floor shadows */}
+            {/* Visual Illustration Mockup with soft blended floor shadow */}
             <div className="mb-4 flex items-center justify-center w-full overflow-visible">
               {slide.illustration}
             </div>
@@ -204,7 +204,7 @@ export const Onboarding: React.FC = () => {
 
       {/* 3. Controls: Centered 3 pagination dots & full-width green CTA button */}
       <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto flex flex-col items-center gap-5 pt-2 shrink-0">
-        {/* 3 Pagination Dots (Active dot highlighted in accent green) */}
+        {/* 3 Pagination Dots (2nd active green on step 2) */}
         <div className="flex items-center justify-center gap-2 mb-1">
           {SLIDES.map((_, i) => (
             <motion.button
