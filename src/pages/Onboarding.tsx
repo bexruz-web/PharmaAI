@@ -1,5 +1,5 @@
 // src/pages/Onboarding.tsx
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
@@ -13,49 +13,40 @@ interface Slide {
   illustration: React.ReactNode
 }
 
-// Step 1 Illustration: 3D Phone scanning ASPIRIN box with soft floor shadow
+// Step 1 Illustration: 3D Phone scanning ASPIRIN box (Enlarged by 2 scale steps)
 const DrugScannerMockupIllustration = () => (
-  <div className="w-full max-w-[325px] sm:max-w-[365px] h-[275px] sm:h-[310px] flex items-center justify-center relative mx-auto overflow-visible">
+  <div className="w-full max-w-[370px] sm:max-w-[430px] h-[315px] sm:h-[365px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
     <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
-    <motion.img
+    <img
       src="/assets/onboarding-scanner.png"
       alt="Drug Scanner Mockup"
-      initial={{ scale: 0.94, y: 4 }}
-      animate={{ scale: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
       className="w-full h-full object-contain filter drop-shadow-md select-none pointer-events-none"
     />
   </div>
 )
 
-// Step 2 Illustration: Audio Guide Phone Mockup with Voice Waveform Widget
+// Step 2 Illustration: Audio Guide Phone Mockup with Voice Waveform Widget (Enlarged by 2 scale steps)
 const AudioGuideMockupIllustration = () => (
-  <div className="w-full max-w-[325px] sm:max-w-[365px] h-[275px] sm:h-[310px] flex items-center justify-center relative mx-auto overflow-visible">
+  <div className="w-full max-w-[370px] sm:max-w-[430px] h-[315px] sm:h-[365px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
     <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
-    <motion.img
+    <img
       src="/assets/onboarding-audio-guide.png"
       alt="Audio Guide Mockup"
-      initial={{ scale: 0.94, y: 4 }}
-      animate={{ scale: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
       className="w-full h-full object-contain filter drop-shadow-md select-none pointer-events-none"
     />
   </div>
 )
 
-// Step 3 Illustration: Pharma AI Chat Phone Mockup with Soft Blended Floor Shadow
+// Step 3 Illustration: Pharma AI Chat Phone Mockup (Enlarged by 2 scale steps)
 const ChatMockupIllustration = () => (
-  <div className="w-full max-w-[325px] sm:max-w-[365px] h-[275px] sm:h-[310px] flex items-center justify-center relative mx-auto overflow-visible">
+  <div className="w-full max-w-[370px] sm:max-w-[430px] h-[315px] sm:h-[365px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
     <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
-    <motion.img
+    <img
       src="/assets/onboarding-chat.png"
       alt="Pharma AI Chat Mockup"
-      initial={{ scale: 0.94, y: 4 }}
-      animate={{ scale: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
       className="w-full h-full object-contain filter drop-shadow-md select-none pointer-events-none"
     />
   </div>
@@ -91,6 +82,19 @@ export const Onboarding: React.FC = () => {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(1)
 
+  // Asset preloading & memory caching for instant zero-lag transitions
+  useEffect(() => {
+    const assetsToPreload = [
+      '/assets/onboarding-scanner.png',
+      '/assets/onboarding-audio-guide.png',
+      '/assets/onboarding-chat.png',
+    ]
+    assetsToPreload.forEach((src) => {
+      const img = new Image()
+      img.src = src
+    })
+  }, [])
+
   const translate = (key: string) => tI18n(key) || (tStore as any)[key] || key
 
   const goTo = (index: number) => {
@@ -114,32 +118,28 @@ export const Onboarding: React.FC = () => {
 
   const slide = SLIDES[current]
 
+  // Ultra-fast, responsive 180ms screen transition variants
   const variants = {
-    enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+    enter: (dir: number) => ({ x: dir > 0 ? '40%' : '-40%', opacity: 0 }),
     center: { x: 0, opacity: 1 },
-    exit:  (dir: number) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 }),
+    exit:  (dir: number) => ({ x: dir > 0 ? '-40%' : '40%', opacity: 0 }),
   }
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] overflow-hidden relative justify-between pt-4 pb-6 px-6 transition-colors duration-200">
-      {/* 1. Top Header: Green "O'tkazib yuborish" (Skip) text action on top-right */}
+      {/* 1. Top Header: Green text button "O'tkazib yuborish" explicitly present on ALL screens (1, 2, and 3) */}
       <div className="relative z-20 flex items-center justify-end h-10 w-full max-w-sm sm:max-w-md mx-auto shrink-0">
-        {current < SLIDES.length - 1 && (
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleSkip}
-            className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-extrabold px-3 py-1.5 btn-touch transition-colors"
-          >
-            {translate('skip')}
-          </motion.button>
-        )}
+        <button
+          onClick={handleSkip}
+          className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-extrabold px-3 py-1.5 btn-touch transition-colors"
+        >
+          {translate('skip')}
+        </button>
       </div>
 
-      {/* 2. Central Content Block shifted DOWNWARDS with increased top padding & breathing room */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center pt-5 sm:pt-7 pb-2">
-        <AnimatePresence custom={direction} mode="wait">
+      {/* 2. Central Content Block: Enlarged central illustrations (scaled UP by 2 steps) & centered typography */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center pt-2 pb-2">
+        <AnimatePresence custom={direction} mode="wait" initial={false}>
           <motion.div
             key={current}
             custom={direction}
@@ -147,17 +147,17 @@ export const Onboarding: React.FC = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+            transition={{ duration: 0.18, ease: [0.25, 1, 0.5, 1] }}
             className="flex flex-col items-center text-center w-full max-w-sm sm:max-w-md mx-auto"
           >
-            {/* Visual Illustration Mockup with soft blended floor shadow */}
-            <div className="mb-4 flex items-center justify-center w-full overflow-visible">
+            {/* Visual Illustration Mockup (Enlarged by 2 scale steps) */}
+            <div className="mb-3 flex items-center justify-center w-full overflow-visible">
               {slide.illustration}
             </div>
 
             {/* Typography Block */}
             <div className="w-full max-w-sm sm:max-w-md px-2 flex flex-col items-center">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2.5 text-center leading-snug tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2 text-center leading-snug tracking-tight">
                 {translate(slide.titleKey)}
               </h2>
               <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed text-center w-full max-w-xs sm:max-w-sm">
@@ -173,15 +173,12 @@ export const Onboarding: React.FC = () => {
         {/* 3 Pagination Dots (Active dot highlighted in accent green) */}
         <div className="flex items-center justify-center gap-2 mb-1">
           {SLIDES.map((_, i) => (
-            <motion.button
+            <button
               key={i}
               onClick={() => goTo(i)}
-              animate={{
-                width: i === current ? 24 : 8,
-                backgroundColor: i === current ? '#10B981' : 'rgba(148,163,184,0.3)',
-              }}
-              className="h-2 rounded-full cursor-pointer"
-              transition={{ type: 'spring', damping: 20 }}
+              className={`h-2 rounded-full transition-all duration-200 cursor-pointer ${
+                i === current ? 'w-6 bg-emerald-500' : 'w-2 bg-slate-300 dark:bg-zinc-700'
+              }`}
             />
           ))}
         </div>
