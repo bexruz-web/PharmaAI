@@ -13,7 +13,7 @@ interface Slide {
   illustration: React.ReactNode
 }
 
-// Step 1 Illustration: Slightly ENLARGED Drug Scanner & Phone Mockup with soft floor shadow
+// Step 1 Illustration: 3D Phone scanning ASPIRIN box with floating '$' badge
 const DrugScannerMockupIllustration = () => (
   <div className="w-full max-w-[300px] sm:max-w-[340px] h-[255px] sm:h-[290px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
@@ -188,8 +188,8 @@ export const Onboarding: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-[#121212] overflow-hidden relative justify-between pt-4 pb-6 px-6 transition-colors duration-200">
-      {/* 1. Top Header: Green "O'tkazib yuborish" (Skip) text button on top-right */}
-      <div className="relative z-20 flex items-center justify-end h-10 w-full max-w-sm sm:max-w-md mx-auto">
+      {/* 1. Top Header: Green "O'tkazib yuborish" (Skip) text action on top-right */}
+      <div className="relative z-20 flex items-center justify-end h-10 w-full max-w-sm sm:max-w-md mx-auto shrink-0">
         {current < SLIDES.length - 1 && (
           <motion.button
             initial={{ opacity: 0 }}
@@ -203,8 +203,8 @@ export const Onboarding: React.FC = () => {
         )}
       </div>
 
-      {/* 2 & 3. Central Image Container & Typography */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-start pt-1">
+      {/* 2. Central Content Block shifted DOWNWARDS with increased top padding & breathing room */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center pt-6 sm:pt-8 pb-2">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={current}
@@ -216,18 +216,16 @@ export const Onboarding: React.FC = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
             className="flex flex-col items-center text-center w-full max-w-sm sm:max-w-md mx-auto"
           >
-            {/* Centered Top Image Container frame (Slightly enlarged 3D illustration) */}
-            <div className="mb-2 flex items-center justify-center w-full overflow-visible">
+            {/* 3D Phone & ASPIRIN Box Illustration Mockup with soft floor shadows */}
+            <div className="mb-4 flex items-center justify-center w-full overflow-visible">
               {slide.illustration}
             </div>
 
             {/* Typography Block */}
             <div className="w-full max-w-sm sm:max-w-md px-2 flex flex-col items-center">
-              {/* Reduced font size by 1 step (text-xl sm:text-2xl), bold, dark, center-aligned */}
-              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2 text-center leading-snug tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2.5 text-center leading-snug tracking-tight">
                 {translate(slide.titleKey)}
               </h2>
-              {/* Subtitle: Wide horizontal margins, center-aligned */}
               <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed text-center w-full max-w-xs sm:max-w-sm">
                 {translate(slide.descKey)}
               </p>
@@ -236,9 +234,9 @@ export const Onboarding: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* 4. Bottom UI Layout & Controls */}
-      <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto flex flex-col items-center gap-5 pt-2">
-        {/* 3 Pagination Dots centered above CTA button (1st active green) */}
+      {/* 3. Controls (Unchanged): Centered 3 pagination dots & full-width green CTA button */}
+      <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto flex flex-col items-center gap-5 pt-2 shrink-0">
+        {/* 3 Pagination Dots (1st active in green) */}
         <div className="flex items-center justify-center gap-2 mb-1">
           {SLIDES.map((_, i) => (
             <motion.button
@@ -254,7 +252,7 @@ export const Onboarding: React.FC = () => {
           ))}
         </div>
 
-        {/* Main CTA: Full-width rounded green "Keyingisi >" button */}
+        {/* Full-width rounded green "Keyingisi >" CTA button */}
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={handleNext}
