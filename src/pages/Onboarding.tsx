@@ -29,7 +29,7 @@ const DrugScannerMockupIllustration = () => (
   </div>
 )
 
-// Step 2 Illustration: Enlarged Audio Guide Phone Mockup with Seamless Soft Floor Shadow
+// Step 2 Illustration: Audio Guide Phone Mockup with Voice Waveform Widget
 const AudioGuideMockupIllustration = () => (
   <div className="w-full max-w-[325px] sm:max-w-[365px] h-[275px] sm:h-[310px] flex items-center justify-center relative mx-auto overflow-visible">
     {/* Soft ambient background glow */}
@@ -45,54 +45,20 @@ const AudioGuideMockupIllustration = () => (
   </div>
 )
 
-// Step 3 Illustration: Fast Home Delivery Box
-const FastDeliveryBox3DIllustration = () => (
-  <svg width="255" height="255" viewBox="0 0 240 240" fill="none" className="drop-shadow-md mx-auto">
-    <defs>
-      <linearGradient id="boxFront" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#334155" />
-        <stop offset="100%" stopColor="#1E293B" />
-      </linearGradient>
-      <linearGradient id="boxTop" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#475569" />
-        <stop offset="100%" stopColor="#334155" />
-      </linearGradient>
-      <linearGradient id="shieldGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#34D399" />
-        <stop offset="100%" stopColor="#059669" />
-      </linearGradient>
-      <filter id="shadow3dBox" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="14" stdDeviation="12" floodColor="#0f172a" floodOpacity="0.25" />
-      </filter>
-    </defs>
-    <circle cx="120" cy="120" r="85" className="fill-slate-100 dark:fill-[#1E1E20]" filter="url(#shadow3dBox)" />
-    <g stroke="#10B981" strokeWidth="4" strokeLinecap="round" opacity="0.8">
-      <line x1="30" y1="90" x2="55" y2="90" />
-      <line x1="20" y1="110" x2="50" y2="110" />
-      <line x1="35" y1="130" x2="55" y2="130" />
-    </g>
-    <motion.g
-      animate={{ y: [-5, 5, -5] }}
-      transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-      transform="translate(60, 60)"
-      filter="url(#shadow3dBox)"
-    >
-      <rect x="15" y="45" width="95" height="75" rx="10" fill="url(#boxFront)" stroke="#64748B" strokeWidth="2" />
-      <path d="M15 45 L35 20 H125 L110 45 Z" fill="url(#boxTop)" stroke="#64748B" strokeWidth="2" />
-      <rect x="52" y="45" width="22" height="75" fill="#10B981" />
-      <path d="M52 45 L64 20 H77 L65 45 Z" fill="#34D399" />
-      <circle cx="63" cy="82" r="14" fill="white" />
-      <path d="M57 82h12M63 76v12" stroke="#10B981" strokeWidth="3" strokeLinecap="round" />
-      <motion.g
-        animate={{ y: [-3, 3, -3], scale: [1, 1.05, 1] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        transform="translate(65, -15)"
-      >
-        <path d="M25 0 L50 12 V35 C50 50, 25 65, 25 65 C25 65, 0 50, 0 35 V12 Z" fill="url(#shieldGrad)" stroke="white" strokeWidth="2.5" />
-        <path d="M16 30 L22 36 L34 22" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-      </motion.g>
-    </motion.g>
-  </svg>
+// Step 3 Illustration: Pharma AI Chat Phone Mockup with Soft Blended Floor Shadow
+const ChatMockupIllustration = () => (
+  <div className="w-full max-w-[325px] sm:max-w-[365px] h-[275px] sm:h-[310px] flex items-center justify-center relative mx-auto overflow-visible">
+    {/* Soft ambient background glow */}
+    <div className="absolute inset-0 bg-gradient-to-b from-emerald-100/60 to-transparent dark:from-emerald-950/20 dark:to-transparent rounded-full blur-2xl -z-10 transform scale-95" />
+    <motion.img
+      src="/assets/onboarding-chat.png"
+      alt="Pharma AI Chat Mockup"
+      initial={{ scale: 0.94, y: 4 }}
+      animate={{ scale: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="w-full h-full object-contain filter drop-shadow-md select-none pointer-events-none"
+    />
+  </div>
 )
 
 const SLIDES: Slide[] = [
@@ -112,7 +78,7 @@ const SLIDES: Slide[] = [
     id: 3,
     titleKey: 'slide3Title',
     descKey:  'slide3Desc',
-    illustration: <FastDeliveryBox3DIllustration />,
+    illustration: <ChatMockupIllustration />,
   },
 ]
 
@@ -171,7 +137,7 @@ export const Onboarding: React.FC = () => {
         )}
       </div>
 
-      {/* 2. Central Content Block: Enlarged illustration & centered typography */}
+      {/* 2. Central Content Block shifted DOWNWARDS with increased top padding & breathing room */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center pt-5 sm:pt-7 pb-2">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
@@ -204,7 +170,7 @@ export const Onboarding: React.FC = () => {
 
       {/* 3. Controls: Centered 3 pagination dots & full-width green CTA button */}
       <div className="relative z-10 w-full max-w-sm sm:max-w-md mx-auto flex flex-col items-center gap-5 pt-2 shrink-0">
-        {/* 3 Pagination Dots (2nd active green on step 2) */}
+        {/* 3 Pagination Dots (Active dot highlighted in accent green) */}
         <div className="flex items-center justify-center gap-2 mb-1">
           {SLIDES.map((_, i) => (
             <motion.button
@@ -220,7 +186,7 @@ export const Onboarding: React.FC = () => {
           ))}
         </div>
 
-        {/* Full-width rounded green "Keyingisi >" CTA button */}
+        {/* Full-width rounded green CTA button ("Keyingisi >" for steps 1-2, "Boshlash >" for step 3) */}
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={handleNext}
