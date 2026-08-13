@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ScanLine, Search, ChevronRight, ArrowLeft, History, Store,
-  Pill, RefreshCw, X, ShoppingCart, SlidersHorizontal, Check
+  Pill, RefreshCw, X, ShoppingCart, SlidersHorizontal, Check, Sparkles
 } from 'lucide-react'
 import { useLangStore } from '../stores/langStore'
+import { useScannerStore } from '../stores/scannerStore'
+import { GeminiScannerModal } from '../components/scanner/GeminiScannerModal'
+import { type ScanAnalysisResult } from '../services/geminiScannerService'
 import { type Translations } from '../i18n/translations'
 import { MedicationCard } from '../components/medication/MedicationCard'
 import {
@@ -103,6 +106,15 @@ const PharmacyLogoBadge: React.FC<{ pharmacy: PharmacyData | PharmacyData[] | nu
 export const Home: React.FC = () => {
   const navigate = useNavigate()
   const { t, lang } = useLangStore()
+  const {
+    isScannerOpen,
+    openScanner,
+    closeScanner,
+    scanResult,
+    setScanResult,
+    clearScanResult
+  } = useScannerStore()
+
   const BANNERS = getBanners(t)
 
   // State management
@@ -121,6 +133,41 @@ export const Home: React.FC = () => {
   const [activeBanner, setActiveBanner] = useState(0)
 
   const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // Handle URL query for auto-opening search if coming from scan page
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('search') === '1' || scanResult) {
+      setShowSearchModal(true)
+    }
+  }, [scanResult])
+
+  // When scanResult updates, auto-populate search query if valid medicine or clear if invalid scan
+  useEffect(() => {
+    if (scanResult) {
+      if (scanResult.is_medicine_package && scanResult.quality_status === 'ok' && scanResult.detected_name) {
+        const cleanName = scanResult.detected_name.trim()
+        const lowerName = cleanName.toLowerCase()
+        const hasDirect = medications.some(m => getLocalizedTitle(m, lang).toLowerCase().includes(lowerName))
+
+        if (hasDirect) {
+          setSearchQuery(cleanName)
+        } else {
+          const words = cleanName.split(/\s+/).filter(w => w.length >= 3 && !/^\d+(mg|g|ml|tab|caps)?$/i.test(w))
+          const matchedWord = words.find(w => medications.some(m => getLocalizedTitle(m, lang).toLowerCase().includes(w.toLowerCase())))
+          setSearchQuery(matchedWord || cleanName)
+        }
+      } else {
+        // Clear search input if scan is not a valid medicine package or blurry
+        setSearchQuery('')
+      }
+    }
+  }, [scanResult, medications, lang])
+
+  const handleScanComplete = (result: ScanAnalysisResult, previewUrl?: string) => {
+    setScanResult(result, previewUrl)
+    setShowSearchModal(true)
+  }
 
   const loadData = async () => {
     setIsLoading(true)
@@ -229,12 +276,12 @@ export const Home: React.FC = () => {
               {t.searchPlaceholder}
             </span>
 
-            {/* Synchronized Circular Scan Badge (Fixed w-9 h-9, no layout scale shifts) */}
+            {/* Synchronized Circular Scan Badge */}
             <motion.button
               whileTap={{ opacity: 0.8 }}
               onClick={(e) => {
                 e.stopPropagation()
-                navigate('/scan')
+                openScanner()
               }}
               title={t.aiScan}
               className="absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-xs transition-colors outline-none focus:outline-none"
@@ -559,7 +606,7 @@ export const Home: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-white dark:bg-neutral-950 flex flex-col transition-colors duration-200 overflow-hidden"
+            className="fixed inset-0 max-w-[430px] mx-auto z-[90] bg-white dark:bg-neutral-950 flex flex-col transition-colors duration-200 overflow-hidden shadow-2xl border-x border-neutral-200 dark:border-neutral-800/50"
           >
             <div className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-4 py-3 safe-top flex items-center gap-3 shadow-xs">
               <motion.button
@@ -594,8 +641,7 @@ export const Home: React.FC = () => {
               <motion.button
                 whileTap={{ scale: 0.92 }}
                 onClick={() => {
-                  setShowSearchModal(false)
-                  navigate('/scan')
+                  openScanner()
                 }}
                 className="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-xs btn-touch"
               >
@@ -604,7 +650,53 @@ export const Home: React.FC = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-6">
-              {!searchQuery && (
+              {/* CASE 1: Not a medicine package (Yandex / Uzum style upper-centered message) */}
+              {scanResult && !scanResult.is_medicine_package && (
+                <div className="flex-1 flex flex-col items-center justify-start pt-16 pb-10 px-6 text-center">
+                  <div className="w-20 h-20 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center mb-5 text-3xl shadow-xs">
+                    ⚠️
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-neutral-900 dark:text-white mb-2 tracking-tight">
+                    Bu dori qutisi emas
+                  </h3>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-xs leading-relaxed font-medium">
+                    Iltimos, dori paketini yoki qutisini yaqinroqdan skanerlang.
+                  </p>
+                </div>
+              )}
+
+              {/* CASE 2: Blurry / poor quality image (Yandex / Uzum style upper-centered message) */}
+              {scanResult && scanResult.is_medicine_package && scanResult.quality_status !== 'ok' && (
+                <div className="flex-1 flex flex-col items-center justify-start pt-16 pb-10 px-6 text-center">
+                  <div className="w-20 h-20 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center mb-5 text-3xl shadow-xs">
+                    📸
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-neutral-900 dark:text-white mb-2 tracking-tight">
+                    Rasm xira tushdi
+                  </h3>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-xs leading-relaxed font-medium">
+                    Qutini yorug'roq joyda yaqinroqdan rasmga oling.
+                  </p>
+                </div>
+              )}
+
+              {/* CASE 3: Recognized Medicine AI Badge */}
+              {scanResult && scanResult.is_medicine_package && scanResult.quality_status === 'ok' && scanResult.detected_name && searchFilteredMedicines.length > 0 && (
+                <div className="p-3 px-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-extrabold text-xs flex items-center justify-between shadow-xs">
+                  <div className="flex items-center gap-2">
+                    <Sparkles size={16} className="text-emerald-500 animate-pulse shrink-0" />
+                    <span>AI aniqladi: <span className="underline">{scanResult.detected_name}</span> {scanResult.dosage ? `(${scanResult.dosage})` : ''}</span>
+                  </div>
+                  <button
+                    onClick={clearScanResult}
+                    className="text-neutral-400 hover:text-neutral-600 dark:hover:text-white shrink-0 p-1"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
+
+              {!searchQuery && !scanResult && (
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-400 text-xs font-bold uppercase tracking-wider">
                     <History size={14} className="text-emerald-600 dark:text-emerald-400" />
@@ -625,7 +717,7 @@ export const Home: React.FC = () => {
                 </div>
               )}
 
-              {searchFilteredMedicines.length > 0 && (
+              {(!scanResult || (scanResult.is_medicine_package && scanResult.quality_status === 'ok')) && searchFilteredMedicines.length > 0 && (
                 <div className="flex flex-col gap-3">
                   <h3 className="text-xs font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                     <Pill size={15} className="text-emerald-600 dark:text-emerald-400" />
@@ -641,9 +733,9 @@ export const Home: React.FC = () => {
 
                       return (
                         <div
-                        key={med.id}
-                        className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3 flex items-center gap-3.5 shadow-xs"
-                      >
+                          key={med.id}
+                          className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3 flex items-center gap-3.5 shadow-xs"
+                        >
                           <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-800">
                             <img
                               src={getMedicationImage(med)}
@@ -685,7 +777,7 @@ export const Home: React.FC = () => {
                 </div>
               )}
 
-              {searchFilteredPharmacies.length > 0 && (
+              {(!scanResult || (scanResult.is_medicine_package && scanResult.quality_status === 'ok')) && searchFilteredPharmacies.length > 0 && (
                 <div className="flex flex-col gap-3">
                   <h3 className="text-xs font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                     <Store size={15} className="text-emerald-600 dark:text-emerald-400" />
@@ -714,15 +806,31 @@ export const Home: React.FC = () => {
                 </div>
               )}
 
-              {searchQuery && searchFilteredMedicines.length === 0 && searchFilteredPharmacies.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="w-18 h-18 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center mb-4 shadow-xs">
+              {/* CASE 4: Quality OK BUT NOT in local database stock (Yandex / Uzum style upper-centered message) */}
+              {scanResult && scanResult.is_medicine_package && scanResult.quality_status === 'ok' && searchFilteredMedicines.length === 0 && (
+                <div className="flex-1 flex flex-col items-center justify-start pt-16 pb-10 px-6 text-center">
+                  <div className="w-20 h-20 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-400 flex items-center justify-center mb-5 text-3xl shadow-xs">
+                    🔍
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-neutral-900 dark:text-white mb-2 tracking-tight">
+                    Afsuski, '{scanResult.detected_name || searchQuery}' topilmadi
+                  </h3>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-xs leading-relaxed font-medium">
+                    Hozircha hech qaysi dorixonada ushbu dori mavjud emas.
+                  </p>
+                </div>
+              )}
+
+              {/* Standard Empty Search State */}
+              {searchQuery && !scanResult && searchFilteredMedicines.length === 0 && searchFilteredPharmacies.length === 0 && (
+                <div className="flex-1 flex flex-col items-center justify-start pt-16 pb-10 px-6 text-center">
+                  <div className="w-20 h-20 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-400 flex items-center justify-center mb-5 text-3xl shadow-xs">
                     <Search size={32} className="text-neutral-400" />
                   </div>
-                  <h3 className="text-sm font-extrabold text-neutral-900 dark:text-white mb-1">
+                  <h3 className="text-base sm:text-lg font-black text-neutral-900 dark:text-white mb-2 tracking-tight">
                     {t.nothingFound}
                   </h3>
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs leading-relaxed">
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-xs leading-relaxed font-medium">
                     {t.nothingFoundHint}
                   </p>
                 </div>
@@ -731,6 +839,13 @@ export const Home: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* GEMINI VISION SCANNER MODAL */}
+      <GeminiScannerModal
+        isOpen={isScannerOpen}
+        onClose={closeScanner}
+        onScanComplete={handleScanComplete}
+      />
     </div>
   )
 }
