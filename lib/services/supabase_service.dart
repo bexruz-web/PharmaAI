@@ -27,9 +27,10 @@ class SupabaseService {
     }
   }
 
-  /// Fetch medications with optional categoryId and searchQuery filters
+  /// Fetch medications with optional categoryId, pharmacyId, and searchQuery filters
   Future<List<Medication>> fetchMedications({
     dynamic categoryId,
+    String? pharmacyId,
     String? searchQuery,
   }) async {
     try {
@@ -37,6 +38,10 @@ class SupabaseService {
 
       if (categoryId != null) {
         query = query.eq('category_id', categoryId);
+      }
+
+      if (pharmacyId != null && pharmacyId.isNotEmpty) {
+        query = query.eq('pharmacy_id', pharmacyId);
       }
 
       if (searchQuery != null && searchQuery.trim().isNotEmpty) {
