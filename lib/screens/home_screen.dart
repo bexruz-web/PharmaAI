@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Search Bar Input (Tapping opens dedicated SearchScreen)
+              // 1. Search Bar Input
               InkWell(
                 onTap: () {
                   Navigator.of(context).push(
@@ -436,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Image Aspect Ratio Container
+                              // Image Aspect Ratio Container with Conditional Rx Badge Stack
                               Expanded(
                                 child: Container(
                                   width: double.infinity,
@@ -444,36 +444,63 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Color(0xFFF1F5F9),
                                     borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                                   ),
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                                    child: med.imageUrl != null && med.imageUrl!.isNotEmpty
-                                        ? Image.network(
-                                            med.imageUrl!,
-                                            fit: BoxFit.contain,
-                                            loadingBuilder: (ctx, child, progress) {
-                                              if (progress == null) return child;
-                                              return const Center(
-                                                child: SizedBox(
-                                                  width: 20,
-                                                  height: 20,
-                                                  child: CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    color: Color(0xFF10B981),
+                                  child: Stack(
+                                    children: [
+                                      Positioned.fill(
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                                          child: med.imageUrl != null && med.imageUrl!.isNotEmpty
+                                              ? Image.network(
+                                                  med.imageUrl!,
+                                                  fit: BoxFit.contain,
+                                                  loadingBuilder: (ctx, child, progress) {
+                                                    if (progress == null) return child;
+                                                    return const Center(
+                                                      child: SizedBox(
+                                                        width: 20,
+                                                        height: 20,
+                                                        child: CircularProgressIndicator(
+                                                          strokeWidth: 2,
+                                                          color: Color(0xFF10B981),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  errorBuilder: (ctx, err, stack) => const Icon(
+                                                    Icons.medication_outlined,
+                                                    size: 36,
+                                                    color: Color(0xFF94A3B8),
                                                   ),
+                                                )
+                                              : const Icon(
+                                                  Icons.medication_outlined,
+                                                  size: 36,
+                                                  color: Color(0xFF94A3B8),
                                                 ),
-                                              );
-                                            },
-                                            errorBuilder: (ctx, err, stack) => const Icon(
-                                              Icons.medication_outlined,
-                                              size: 36,
-                                              color: Color(0xFF94A3B8),
+                                        ),
+                                      ),
+                                      // Render Rx badge ONLY IF prescriptionRequired is TRUE
+                                      if (med.prescriptionRequired)
+                                        Positioned(
+                                          top: 8,
+                                          left: 8,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFEF4444),
+                                              borderRadius: BorderRadius.circular(6),
                                             ),
-                                          )
-                                        : const Icon(
-                                            Icons.medication_outlined,
-                                            size: 36,
-                                            color: Color(0xFF94A3B8),
+                                            child: const Text(
+                                              'Rx',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.extrabold,
+                                                fontSize: 10,
+                                              ),
+                                            ),
                                           ),
+                                        ),
+                                    ],
                                   ),
                                 ),
                               ),

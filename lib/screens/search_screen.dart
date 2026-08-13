@@ -218,11 +218,37 @@ class _SearchScreenState extends State<SearchScreen> {
                                 color: const Color(0xFFF1F5F9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: med.imageUrl != null && med.imageUrl!.isNotEmpty
-                                    ? Image.network(med.imageUrl!, fit: BoxFit.contain)
-                                    : const Icon(Icons.medication_outlined, color: Color(0xFF94A3B8)),
+                              child: Stack(
+                                children: [
+                                  Positioned.fill(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: med.imageUrl != null && med.imageUrl!.isNotEmpty
+                                          ? Image.network(med.imageUrl!, fit: BoxFit.contain)
+                                          : const Icon(Icons.medication_outlined, color: Color(0xFF94A3B8)),
+                                    ),
+                                  ),
+                                  if (med.prescriptionRequired)
+                                    Positioned(
+                                      top: 4,
+                                      left: 4,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFEF4444),
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: const Text(
+                                          'Rx',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.extrabold,
+                                            fontSize: 8,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                             const SizedBox(width: 12),

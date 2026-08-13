@@ -433,12 +433,12 @@ export const Home: React.FC = () => {
                       className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-300 hover:scale-105"
                     />
 
-                    {/* Rx / OTC Badge */}
-                    <span className={`absolute top-2 left-2 px-1.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase shadow-xs ${
-                      med.rx ? 'bg-red-500 text-white' : 'bg-slate-200/90 dark:bg-zinc-800/90 text-slate-700 dark:text-slate-300'
-                    }`}>
-                      {med.rx ? t.rxRequired : t.otc}
-                    </span>
+                    {/* Rx Badge (Rendered ONLY if rx / prescription_required is true) */}
+                    {med.rx && (
+                      <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase shadow-xs bg-red-500 text-white">
+                        {t.rxRequired}
+                      </span>
+                    )}
 
                     {/* Heart Icon Button */}
                     <button

@@ -97,30 +97,28 @@ class MedicationDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Badges Row (Rx/OTC & InStock)
+                  // Badges Row
                   Row(
                     children: [
-                      // Prescription Status Badge
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: medication.prescriptionRequired
-                              ? const Color(0xFFFEE2E2)
-                              : const Color(0xFFE0F2FE),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          medication.prescriptionRequired ? 'Rx • Retseptli' : 'OTC • Retseptsiz',
-                          style: TextStyle(
-                            color: medication.prescriptionRequired
-                                ? const Color(0xFFB91C1C)
-                                : const Color(0xFF0369A1),
-                            fontWeight: FontWeight.extrabold,
-                            fontSize: 11,
+                      // Render Prescription Badge ONLY IF prescriptionRequired is TRUE
+                      if (medication.prescriptionRequired) ...[
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFEE2E2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text(
+                            'Rx • Retseptli',
+                            style: TextStyle(
+                              color: Color(0xFFB91C1C),
+                              fontWeight: FontWeight.extrabold,
+                              fontSize: 11,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
+                        const SizedBox(width: 8),
+                      ],
 
                       // Stock Badge
                       Container(
