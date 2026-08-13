@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/models.dart';
 import '../services/supabase_service.dart';
+import '../widgets/shimmer_loading.dart';
 import 'pharmacy_profile_screen.dart';
 import 'medication_detail_screen.dart';
+import 'search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -110,45 +112,41 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Search Bar Input
-              Container(
-                height: 48,
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
+              // 1. Search Bar Input (Tapping opens dedicated SearchScreen)
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => SearchScreen(locale: _currentLocale),
                     ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.search, color: Color(0xFF94A3B8), size: 20),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        onChanged: (val) {
-                          _searchQuery = val;
-                          _medicationsFuture = SupabaseService.instance.fetchMedications(
-                            categoryId: _selectedCategoryId,
-                            searchQuery: _searchQuery,
-                          );
-                          setState(() {});
-                        },
-                        decoration: const InputDecoration(
-                          hintText: 'Dori yoki dorixona qidiring...',
-                          hintStyle: TextStyle(color: Color(0xFF94A3B8), fontSize: 13),
-                          border: InputBorder.none,
-                          isDense: true,
-                        ),
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  height: 48,
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFFE2E8F0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.02),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.search, color: Color(0xFF94A3B8), size: 20),
+                      SizedBox(width: 10),
+                      Text(
+                        'Dori yoki dorixona qidiring...',
+                        style: TextStyle(color: Color(0xFF94A3B8), fontSize: 13),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
@@ -169,10 +167,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 future: _categoriesFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const SizedBox(
-                      height: 40,
-                      child: Center(
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF10B981)),
+                    return SizedBox(
+                      height: 38,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        separatorBuilder: (_, __) => const SizedBox(width: 8),
+                        itemBuilder: (_, __) => const ShimmerBox(width: 100, height: 38, borderRadius: 20),
                       ),
                     );
                   }
@@ -182,9 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        // "All" Category Chip
                         _buildCategoryChip(
-                          label: 'Barchasi',
+                          label: 'Barchasi • All',
                           isSelected: _selectedCategoryId == null,
                           onTap: () {
                             setState(() {
@@ -235,10 +235,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 future: _pharmaciesFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const SizedBox(
-                      height: 50,
-                      child: Center(
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF10B981)),
+                    return SizedBox(
+                      height: 54,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 3,
+                        separatorBuilder: (_, __) => const SizedBox(width: 10),
+                        itemBuilder: (_, __) => const ShimmerBox(width: 150, height: 54, borderRadius: 30),
                       ),
                     );
                   }
@@ -354,25 +357,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 future: _medicationsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Padding(
-                      padding: EdgeInsets.all(40.0),
-                      child: Center(
-                        child: CircularProgressIndicator(color: Color(0xFF10B981)),
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 4,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.76,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
                       ),
+                      itemBuilder: (_, __) => const ShimmerBox(width: double.infinity, height: 200, borderRadius: 16),
                     );
                   }
 
                   final medications = snapshot.data ?? [];
                   if (medications.isEmpty) {
                     return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30.0),
+                      padding: EdgeInsets.symmetric(vertical: 40.0),
                       child: Center(
                         child: Column(
                           children: [
                             Icon(Icons.search_off_outlined, size: 48, color: Color(0xFF94A3B8)),
                             SizedBox(height: 8),
                             Text(
-                              'Dorilar topilmadi',
+                              'Dorilar topilmadi • No items found',
                               style: TextStyle(
                                 color: Color(0xFF64748B),
                                 fontSize: 13,
@@ -427,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Image Aspect Ratio Container with loading/error handlers
+                              // Image Aspect Ratio Container
                               Expanded(
                                 child: Container(
                                   width: double.infinity,
