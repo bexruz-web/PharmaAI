@@ -40,8 +40,6 @@ export const ProfilePage: React.FC = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-[#121212] min-h-full pb-24 transition-colors duration-200">
-      <div className="h-[60px]" />
-
       <motion.div
         variants={containerVariants}
         initial="hidden"

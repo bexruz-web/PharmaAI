@@ -4,147 +4,64 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ScanLine, Search, ChevronRight, ArrowLeft, History, Store,
-  Heart, ShoppingCart, Check, Star, ShieldCheck, Pill, Stethoscope, Sparkles, Baby, Eye, X
+  Pill, RefreshCw, X, ShoppingCart, SlidersHorizontal, Check
 } from 'lucide-react'
-import { Card } from '../components/ui/Card'
 import { useLangStore } from '../stores/langStore'
+import { type Translations } from '../i18n/translations'
+import { MedicationCard } from '../components/medication/MedicationCard'
+import {
+  fetchMedications,
+  fetchCategories,
+  fetchPharmacies,
+  getLocalizedTitle,
+  getLocalizedDescription,
+  getCategoryName,
+  getPharmacyName,
+  getMedicationImage,
+  getPharmacyLogo,
+  Medication,
+  CategoryData,
+  PharmacyData
+} from '../services/medicationService'
 
-// Mock Categories - Minimalist rounded square blocks with clean icons
-const CATEGORIES = [
-  { id: 'all',     labelUz: 'Barchasi',     labelRu: 'Все',          labelEn: 'All',         icon: Pill },
-  { id: 'analg',    labelUz: 'Analgetiklar', labelRu: 'Анальгетики',  labelEn: 'Analgesics',  icon: Stethoscope },
-  { id: 'antib',    labelUz: 'Antibiotiklar',labelRu: 'Антибиотики',  labelEn: 'Antibiotics', icon: ShieldCheck },
-  { id: 'vitam',    labelUz: 'Vitaminlar',   labelRu: 'Витамины',     labelEn: 'Vitamins',    icon: Sparkles },
-  { id: 'baby',     labelUz: 'Bolalar uchun',labelRu: 'Для детей',    labelEn: 'For Children',icon: Baby },
-  { id: 'eye',      labelUz: 'Ko\'z parvarishi',labelRu: 'Уход за глазами',labelEn: 'Eye Care',  icon: Eye },
-]
-
-// Mock Vendors / Stores - Horizontal pill buttons with small avatar logo
-const VENDORS = [
-  { id: 1, name: 'Oson Apteka', rating: '4.9', time: '15-20 min', color: 'bg-emerald-600' },
-  { id: 2, name: 'Grand Pharma', rating: '4.8', time: '20-30 min', color: 'bg-blue-600' },
-  { id: 3, name: '999 Apteka', rating: '4.7', time: '10-15 min', color: 'bg-amber-600' },
-  { id: 4, name: 'Best Pharm', rating: '4.9', time: '25-35 min', color: 'bg-purple-600' },
-  { id: 5, name: 'Dori-Darmon', rating: '4.8', time: '15-25 min', color: 'bg-teal-600' },
-]
-
-// Mock Medicines with Unsplash photography & 80% card image box
-const MEDICINES = [
+// Banners are built dynamically from i18n translations
+const getBanners = (t: Translations) => [
   {
     id: 1,
-    name: 'Paracetamol 500mg',
-    subUz: 'Faol moddasi: Paratsetamol',
-    subRu: 'Активное вещество: Парацетамол',
-    subEn: 'Active Ingredient: Paracetamol',
-    category: 'analg',
-    price: 12000,
-    oldPrice: 15000,
-    rating: 4.9,
-    reviews: 128,
-    rx: false,
-    store: 'Oson Apteka',
-    img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=400&h=400',
+    tag: t.bannerAiTag,
+    tagColor: 'text-emerald-400',
+    title: t.bannerAiTitle,
+    subtitle: t.bannerAiSubtitle,
+    linkText: t.bannerAiCta,
+    linkColor: 'text-emerald-400 hover:text-emerald-300',
+    img: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=900',
+    action: 'scan'
   },
   {
     id: 2,
-    name: 'No-shpa 40mg',
-    subUz: 'Faol moddasi: Drotaverin',
-    subRu: 'Активное вещество: Дротаверин',
-    subEn: 'Active Ingredient: Drotaverine',
-    category: 'analg',
-    price: 24000,
-    oldPrice: 28000,
-    rating: 4.8,
-    reviews: 84,
-    rx: false,
-    store: 'Grand Pharma',
-    img: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&q=80&w=400&h=400',
+    tag: t.bannerGrandTag,
+    tagColor: 'text-amber-400',
+    title: t.bannerGrandTitle,
+    subtitle: t.bannerGrandSubtitle,
+    linkText: t.bannerGrandCta,
+    linkColor: 'text-amber-400 hover:text-amber-300',
+    img: 'https://images.unsplash.com/photo-1563213126-a4273aed2016?auto=format&fit=crop&q=80&w=900',
+    action: 'categories'
   },
   {
     id: 3,
-    name: 'Amoxicillin 500mg',
-    subUz: 'Faol moddasi: Amoksitsillin',
-    subRu: 'Активное вещество: Амоксициллин',
-    subEn: 'Active Ingredient: Amoxicillin',
-    category: 'antib',
-    price: 18000,
-    oldPrice: 22000,
-    rating: 4.7,
-    reviews: 96,
-    rx: true,
-    store: '999 Apteka',
-    img: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-  {
-    id: 4,
-    name: 'Vitamin C 1000mg',
-    subUz: 'Faol moddasi: Askorbin kislotasi',
-    subRu: 'Активное вещество: Аскорбиновая к-та',
-    subEn: 'Active Ingredient: Ascorbic Acid',
-    category: 'vitam',
-    price: 32000,
-    oldPrice: 40000,
-    rating: 4.9,
-    reviews: 154,
-    rx: false,
-    store: 'Best Pharm',
-    img: 'https://images.unsplash.com/photo-1616679911721-eff6eec18fcd?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-  {
-    id: 5,
-    name: 'Ibuprofen 400mg',
-    subUz: 'Faol moddasi: Ibuprofen',
-    subRu: 'Активное вещество: Ибупрофен',
-    subEn: 'Active Ingredient: Ibuprofen',
-    category: 'analg',
-    price: 15000,
-    oldPrice: 19000,
-    rating: 4.8,
-    reviews: 112,
-    rx: false,
-    store: 'Oson Apteka',
-    img: 'https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-  {
-    id: 6,
-    name: 'Cardiomagnyl 75mg',
-    subUz: 'Faol moddasi: Atsetilsalitsil kislotasi',
-    subRu: 'Активное вещество: Ацетилсалициловая к-ta',
-    subEn: 'Active Ingredient: Acetylsalicylic Acid',
-    category: 'analg',
-    price: 38000,
-    oldPrice: 45000,
-    rating: 4.9,
-    reviews: 210,
-    rx: true,
-    store: 'Dori-Darmon',
-    img: 'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-]
-
-// Banners with clean matte presentation
-const BANNERS = [
-  {
-    id: 1,
-    title: 'AI Skaner bilan tez toping!',
-    subtitle: 'Retseptingizni rasmga oling',
-    btnTextUz: 'Batafsil ko\'rish ➔',
-    btnTextRu: 'Подробнее ➔',
-    btnTextEn: 'See details ➔',
-    img: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&q=80&w=400&h=300',
-  },
-  {
-    id: 2,
-    title: 'Barcha vitaminlar -15%',
-    subtitle: 'Imunitetni mustahkamlang',
-    btnTextUz: 'Batafsil ko\'rish ➔',
-    btnTextRu: 'Подробнее ➔',
-    btnTextEn: 'See details ➔',
-    img: 'https://images.unsplash.com/photo-1616679911721-eff6eec18fcd?auto=format&fit=crop&q=80&w=400&h=300',
+    tag: t.bannerRegionalTag,
+    tagColor: 'text-cyan-400',
+    title: t.bannerRegionalTitle,
+    subtitle: t.bannerRegionalSubtitle,
+    linkText: t.bannerRegionalCta,
+    linkColor: 'text-cyan-400 hover:text-cyan-300',
+    img: 'https://images.unsplash.com/photo-1576671081837-49000212a370?auto=format&fit=crop&q=80&w=900',
+    action: 'map'
   }
 ]
 
-const RECENT_SEARCHES = ['Paracetamol', 'No-shpa', 'Vitamin C', 'Amoxicillin', 'Ibuprofen']
+const RECENT_SEARCHES = ['Paratsetamol', 'No-Shpa', 'Vitamin C', 'Amoxicillin', 'Theraflu']
 
 const containerVariants = {
   hidden: {},
@@ -156,21 +73,79 @@ const itemVariants = {
   show:   { opacity: 1, y: 0, transition: { type: 'spring', damping: 22 } },
 }
 
+// Pharmacy Logo Component for top filters & search
+const PharmacyLogoBadge: React.FC<{ pharmacy: PharmacyData | PharmacyData[] | null | undefined; name: string; colorIdx?: number }> = ({ pharmacy, name, colorIdx = 0 }) => {
+  const logoUrl = getPharmacyLogo(pharmacy)
+  const [imgError, setImgError] = useState(false)
+
+  const colors = ['bg-emerald-600', 'bg-blue-600', 'bg-amber-600', 'bg-purple-600', 'bg-teal-600']
+  const colorClass = colors[colorIdx % colors.length]
+  const initialLetter = (name || 'D').charAt(0).toUpperCase()
+
+  if (logoUrl && !imgError) {
+    return (
+      <img
+        src={logoUrl}
+        alt={name}
+        onError={() => setImgError(true)}
+        className="w-5 h-5 rounded-full object-cover border border-slate-200 dark:border-zinc-700 bg-white shrink-0"
+      />
+    )
+  }
+
+  return (
+    <div className={`w-5 h-5 rounded-full ${colorClass} text-white flex items-center justify-center text-[10px] font-extrabold shrink-0 shadow-xs`}>
+      {initialLetter}
+    </div>
+  )
+}
+
 export const Home: React.FC = () => {
   const navigate = useNavigate()
   const { t, lang } = useLangStore()
+  const BANNERS = getBanners(t)
+
+  // State management
+  const [medications, setMedications] = useState<Medication[]>([])
+  const [categories, setCategories] = useState<CategoryData[]>([])
+  const [pharmacies, setPharmacies] = useState<PharmacyData[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [fetchError, setFetchError] = useState<string | null>(null)
 
   const [showSearchModal, setShowSearchModal] = useState(false)
+  const [showCategoryModal, setShowCategoryModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('all')
-  const [selectedVendor, setSelectedVendor] = useState<number | null>(null)
-  const [favorites, setFavorites] = useState<number[]>([])
-  const [addedItems, setAddedItems] = useState<number[]>([])
+  const [selectedPharmacyId, setSelectedPharmacyId] = useState<string | null>(null)
+  const [cartQuantities, setCartQuantities] = useState<Record<string, number>>({})
   const [activeBanner, setActiveBanner] = useState(0)
 
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  // Auto scroll promo banners
+  const loadData = async () => {
+    setIsLoading(true)
+    setFetchError(null)
+    try {
+      const [medsData, catsData, pharmsData] = await Promise.all([
+        fetchMedications(),
+        fetchCategories(),
+        fetchPharmacies(),
+      ])
+      setMedications(medsData)
+      setCategories(catsData)
+      setPharmacies(pharmsData)
+    } catch (err: any) {
+      console.error('Failed to load data from Supabase:', err)
+      setFetchError(err.message || 'Ma\'lumotlarni yuklashda xatolik yuz berdi')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveBanner((prev) => (prev + 1) % BANNERS.length)
@@ -178,157 +153,181 @@ export const Home: React.FC = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Auto-focus search input when search modal opens
   useEffect(() => {
     if (showSearchModal) {
       setTimeout(() => searchInputRef.current?.focus(), 150)
     }
   }, [showSearchModal])
 
-  const toggleFavorite = (id: number) => {
-    setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
-    )
+  const updateQuantity = (id: string, qty: number) => {
+    setCartQuantities((prev) => ({
+      ...prev,
+      [id]: qty,
+    }))
   }
 
-  const addToCart = (id: number) => {
-    if (!addedItems.includes(id)) {
-      setAddedItems((prev) => [...prev, id])
-      setTimeout(() => {
-        setAddedItems((prev) => prev.filter((itemId) => itemId !== id))
-      }, 1500)
-    }
-  }
-
-  const getCategoryLabel = (cat: typeof CATEGORIES[0]) => {
-    if (lang === 'UZ') return cat.labelUz
-    if (lang === 'RU') return cat.labelRu
-    return cat.labelEn
-  }
-
-  const getActiveIngredient = (med: typeof MEDICINES[0]) => {
-    if (lang === 'UZ') return med.subUz
-    if (lang === 'RU') return med.subRu
-    return med.subEn
-  }
-
-  const getReviewsText = (count: number) => {
-    if (lang === 'UZ') return `${count} sharh`
-    if (lang === 'RU') return `${count} отзывов`
-    return `${count} reviews`
-  }
-
-  const getBannerBtnText = (banner: typeof BANNERS[0]) => {
-    if (lang === 'UZ') return banner.btnTextUz
-    if (lang === 'RU') return banner.btnTextRu
-    return banner.btnTextEn
-  }
-
-  // Search filtering logic for dedicated Search View/Modal
   const queryLower = searchQuery.trim().toLowerCase()
 
-  const searchFilteredMedicines = MEDICINES.filter((med) =>
-    queryLower === '' ||
-    med.name.toLowerCase().includes(queryLower) ||
-    med.subUz.toLowerCase().includes(queryLower) ||
-    med.subRu.toLowerCase().includes(queryLower) ||
-    med.subEn.toLowerCase().includes(queryLower) ||
-    med.store.toLowerCase().includes(queryLower)
+  const searchFilteredMedicines = medications.filter((med) => {
+    if (!queryLower) return true
+    const title = getLocalizedTitle(med, lang).toLowerCase()
+    const desc = (getLocalizedDescription(med, lang) || '').toLowerCase()
+    const catName = getCategoryName(med.categories, lang).toLowerCase()
+    const pharmName = getPharmacyName(med.pharmacies).toLowerCase()
+    const dosage = (med.dosage || '').toLowerCase()
+    const mfg = (med.manufacturer_country || '').toLowerCase()
+
+    return (
+      title.includes(queryLower) ||
+      desc.includes(queryLower) ||
+      catName.includes(queryLower) ||
+      pharmName.includes(queryLower) ||
+      dosage.includes(queryLower) ||
+      mfg.includes(queryLower)
+    )
+  })
+
+  const searchFilteredPharmacies = pharmacies.filter((p) =>
+    !queryLower || (p.name || '').toLowerCase().includes(queryLower)
   )
 
-  const searchFilteredVendors = VENDORS.filter((v) =>
-    queryLower === '' || v.name.toLowerCase().includes(queryLower)
-  )
+  const homeMedicines = medications.filter((med) => {
+    let matchesCategory = true
+    if (activeCategory !== 'all') {
+      matchesCategory =
+        med.category_id === activeCategory ||
+        (Array.isArray(med.categories)
+          ? med.categories.some((c) => c.id === activeCategory)
+          : med.categories?.id === activeCategory)
+    }
 
-  // Main Home medicines filtering (by selected category and selected vendor chip)
-  const homeMedicines = MEDICINES.filter((med) => {
-    const matchesCategory = activeCategory === 'all' || med.category === activeCategory
-    const selectedVendorObj = VENDORS.find((v) => v.id === selectedVendor)
-    const matchesVendor = !selectedVendorObj || med.store === selectedVendorObj.name
-    return matchesCategory && matchesVendor
+    let matchesPharmacy = true
+    if (selectedPharmacyId) {
+      matchesPharmacy = med.pharmacy_id === selectedPharmacyId
+    }
+
+    return matchesCategory && matchesPharmacy
   })
 
   return (
-    <div className="bg-slate-50 dark:bg-[#121212] min-h-full pb-24 transition-colors duration-200">
-      {/* MAIN HOMEPAGE CONTAINER with spacious gap-6 spacing */}
+    <div className="bg-white dark:bg-neutral-950 transition-colors duration-200">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="flex flex-col gap-6 px-4 pt-14"
+        className="flex flex-col gap-5 px-4 pt-4 pb-24"
       >
-        {/* 1. SEARCH TRIGGER BAR (Clicking opens full-screen Search Modal) */}
-        <motion.div variants={itemVariants} className="w-full">
+        {/* 1. PILL SEARCH BAR WITH FIXED EMBEDDED SCAN BUTTON & STANDALONE FILTER BUTTON */}
+        <motion.div variants={itemVariants} className="flex items-center gap-2.5 w-full">
+          {/* Main Input Container */}
           <div
             onClick={() => setShowSearchModal(true)}
-            className="w-full h-13 rounded-2xl bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 flex items-center px-4 gap-3 shadow-xs cursor-pointer hover:border-slate-300 dark:hover:border-zinc-700 transition-all duration-150"
+            className="flex-1 h-11 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-center pl-3.5 pr-12 shadow-xs cursor-pointer overflow-hidden hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors duration-150 relative"
           >
-            <Search size={18} className="text-slate-400 shrink-0" />
-            <span className="flex-1 text-slate-400 dark:text-slate-500 font-medium text-sm truncate">
+            <Search size={18} className="text-neutral-400 shrink-0 mr-2.5" />
+            <span className="flex-1 text-neutral-400 dark:text-neutral-500 font-medium text-xs sm:text-sm truncate">
               {t.searchPlaceholder}
             </span>
-            {/* CLEAN SCAN ICON ONLY! -> navigates directly to /scan */}
+
+            {/* Synchronized Circular Scan Badge (Fixed w-9 h-9, no layout scale shifts) */}
             <motion.button
-              whileTap={{ scale: 0.92 }}
+              whileTap={{ opacity: 0.8 }}
               onClick={(e) => {
                 e.stopPropagation()
                 navigate('/scan')
               }}
               title={t.aiScan}
-              className="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-xs btn-touch"
+              className="absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-xs transition-colors outline-none focus:outline-none"
             >
               <ScanLine size={18} />
             </motion.button>
           </div>
+
+          {/* Standalone Circular Filter Button */}
+          <motion.button
+            whileTap={{ opacity: 0.8 }}
+            onClick={() => setShowCategoryModal(true)}
+            title={t.categories}
+            className={`
+              w-11 h-11 rounded-full border flex items-center justify-center relative shrink-0 shadow-xs transition-colors duration-150 outline-none focus:outline-none
+              ${activeCategory !== 'all'
+                ? 'bg-emerald-600 border-emerald-600 text-white'
+                : 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700'}
+            `}
+          >
+            <SlidersHorizontal size={18} />
+            {activeCategory !== 'all' && (
+              <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-white dark:border-[#121212]" />
+            )}
+          </motion.button>
         </motion.div>
 
-        {/* 2. PROMO BANNERS CAROUSEL */}
-        <motion.div variants={itemVariants} className="relative overflow-hidden rounded-2xl">
-          <div className="relative w-full h-36 bg-slate-900 dark:bg-[#1E1E20] text-white rounded-2xl border border-slate-800 dark:border-zinc-800 shadow-xs overflow-hidden">
+        {/* 2. PROMO BANNERS CAROUSEL (Smooth Gradient Fade Style) */}
+        <motion.div variants={itemVariants} className="relative w-full">
+          <div className="rounded-3xl overflow-hidden relative shadow-2xl h-44 md:h-48 w-full border border-white/10 bg-neutral-950">
             <AnimatePresence mode="wait">
-              <motion.div
-                key={activeBanner}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 p-4 flex justify-between items-center z-10"
-              >
-                <div className="flex-1 max-w-[60%] flex flex-col justify-center">
-                  <span className="text-[10px] font-extrabold tracking-widest text-emerald-400 uppercase mb-1">
-                    SPECIAL OFFER
-                  </span>
-                  <h3 className="text-sm font-extrabold text-white leading-tight mb-1">
-                    {BANNERS[activeBanner].title}
-                  </h3>
-                  <p className="text-[11px] text-slate-300 font-medium mb-2 line-clamp-1">
-                    {BANNERS[activeBanner].subtitle}
-                  </p>
-                  <button
-                    onClick={() => navigate('/scan')}
-                    className="text-[11px] font-extrabold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 btn-touch"
+              {(() => {
+                const banner = BANNERS[activeBanner]
+                return (
+                  <motion.div
+                    key={banner.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.55, ease: 'easeInOut' }}
+                    className="absolute inset-0"
                   >
-                    <span>{getBannerBtnText(BANNERS[activeBanner])}</span>
-                  </button>
-                </div>
-                <div className="w-24 h-24 rounded-xl overflow-hidden shrink-0 shadow-xs bg-slate-800 border border-slate-700">
-                  <img
-                    src={BANNERS[activeBanner].img}
-                    alt="Banner Promo"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </motion.div>
+                    {/* Full-width crisp background image */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                      style={{ backgroundImage: `url(${banner.img})` }}
+                    />
+
+                    {/* Smooth left-to-right gradient overlay: dark on left, transparent on right */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/70 to-transparent z-10" />
+
+                    {/* Content: sits above the gradient */}
+                    <div className="absolute inset-0 z-20 flex flex-col justify-between p-4 md:p-5 w-3/5">
+                      {/* Top: Clean text tag, no pill/border */}
+                      <span className={`text-[10px] font-semibold tracking-widest uppercase ${banner.tagColor}`}>
+                        {banner.tag}
+                      </span>
+
+                      {/* Bottom: Headline, Subtitle, CTA link */}
+                      <div className="flex flex-col gap-1">
+                        <h3 className="text-sm md:text-[15px] font-extrabold text-white leading-tight tracking-tight drop-shadow-sm">
+                          {banner.title}
+                        </h3>
+                        <p className="text-[11px] text-slate-300/85 font-medium line-clamp-2 leading-snug">
+                          {banner.subtitle}
+                        </p>
+                        <motion.button
+                          whileTap={{ scale: 0.95 }}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            if (banner.action === 'scan') navigate('/scan')
+                            else if (banner.action === 'map') navigate('/map')
+                            else setShowCategoryModal(true)
+                          }}
+                          className={`text-xs font-bold flex items-center gap-1 mt-1 w-fit hover:underline cursor-pointer transition-colors ${banner.linkColor}`}
+                        >
+                          {banner.linkText}
+                        </motion.button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )
+              })()}
             </AnimatePresence>
 
-            {/* Dots indicator */}
-            <div className="absolute bottom-2 left-4 z-20 flex gap-1.5">
+            {/* Dot indicators — centered at bottom */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex gap-1.5">
               {BANNERS.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveBanner(i)}
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    i === activeBanner ? 'w-5 bg-emerald-400' : 'w-1.5 bg-slate-600'
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === activeBanner ? 'w-6 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/70'
                   }`}
                 />
               ))}
@@ -336,168 +335,223 @@ export const Home: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* 3. VENDORS / STORES BAR (with gap-3 spacing) */}
+        {/* 3. PHARMACIES BAR */}
+        {pharmacies.length > 0 && (
+          <motion.div variants={itemVariants} className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-extrabold text-neutral-900 dark:text-white">
+                {t.nearbyPharmacies}
+              </h2>
+              <button
+                onClick={() => navigate('/map')}
+                className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 btn-touch"
+              >
+                <span>{t.seeAll}</span>
+                <ChevronRight size={14} />
+              </button>
+            </div>
+            <div className="flex gap-3 overflow-x-auto no-scrollbar py-1 -mx-4 px-4">
+              {pharmacies.map((pharm, idx) => {
+                const isSelected = selectedPharmacyId === pharm.id
+                const pharmName = pharm.name || `Dorixona ${idx + 1}`
+
+                return (
+                  <motion.button
+                    key={pharm.id}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => setSelectedPharmacyId(isSelected ? null : (pharm.id || null))}
+                    className={`
+                      flex items-center gap-2 h-10 px-3.5 rounded-full border shrink-0 text-xs font-bold transition-all duration-150 shadow-xs
+                      ${isSelected
+                        ? 'bg-emerald-600 border-emerald-600 text-white'
+                        : 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 hover:border-neutral-300'}
+                    `}
+                  >
+                    <PharmacyLogoBadge pharmacy={pharm} name={pharmName} colorIdx={idx} />
+                    <span>{pharmName}</span>
+                  </motion.button>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+
+        {/* 4. POPULAR MEDICINES GRID */}
         <motion.div variants={itemVariants} className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-extrabold text-slate-900 dark:text-white">
-              {t.nearbyPharmacies}
-            </h2>
-            <button
-              onClick={() => navigate('/map')}
-              className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 btn-touch"
-            >
-              <span>{t.seeAll}</span>
-              <ChevronRight size={14} />
-            </button>
-          </div>
-          <div className="flex gap-3 overflow-x-auto no-scrollbar py-1 -mx-4 px-4">
-            {VENDORS.map((vendor) => {
-              const isSelected = selectedVendor === vendor.id
-              return (
-                <motion.button
-                  key={vendor.id}
-                  whileTap={{ scale: 0.96 }}
-                  onClick={() => setSelectedVendor(isSelected ? null : vendor.id)}
-                  className={`
-                    flex items-center gap-2 h-10 px-3.5 rounded-full border shrink-0 text-xs font-bold transition-all duration-150 shadow-xs
-                    ${isSelected
-                      ? 'bg-emerald-600 border-emerald-600 text-white'
-                      : 'bg-white dark:bg-[#1E1E20] border-slate-200/80 dark:border-zinc-800 text-slate-800 dark:text-slate-200 hover:border-slate-300'}
-                  `}
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-extrabold text-neutral-900 dark:text-white">
+                {t.popularMedicines}
+              </h2>
+              {activeCategory !== 'all' && (
+                <button
+                  onClick={() => setActiveCategory('all')}
+                  className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-[10px] font-extrabold flex items-center gap-1"
                 >
-                  <div className={`w-5 h-5 rounded-full ${vendor.color} text-white flex items-center justify-center text-[10px] font-extrabold`}>
-                    {vendor.name.charAt(0)}
-                  </div>
-                  <span>{vendor.name}</span>
-                  <span className="text-[10px] opacity-75">⭐ {vendor.rating}</span>
-                </motion.button>
-              )
-            })}
-          </div>
-        </motion.div>
-
-        {/* 4. CATEGORY CHIPS (with gap-3.5 spacing) */}
-        <motion.div variants={itemVariants} className="flex flex-col gap-3">
-          <h2 className="text-sm font-extrabold text-slate-900 dark:text-white">
-            {t.categories}
-          </h2>
-          <div className="flex gap-3.5 overflow-x-auto no-scrollbar py-1 -mx-4 px-4">
-            {CATEGORIES.map((cat) => {
-              const Icon = cat.icon
-              const isSelected = activeCategory === cat.id
-              return (
-                <motion.button
-                  key={cat.id}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`
-                    w-20 h-20 rounded-2xl border flex flex-col items-center justify-center gap-1.5 shrink-0 text-xs font-bold transition-all duration-150 shadow-xs
-                    ${isSelected
-                      ? 'bg-emerald-600 border-emerald-600 text-white'
-                      : 'bg-white dark:bg-[#1E1E20] border-slate-200/80 dark:border-zinc-800 text-slate-700 dark:text-slate-300 hover:border-slate-300'}
-                  `}
-                >
-                  <Icon size={22} className={isSelected ? 'text-white' : 'text-emerald-600 dark:text-emerald-400'} />
-                  <span className="text-[10px] font-extrabold text-center leading-tight line-clamp-1 px-1">
-                    {getCategoryLabel(cat)}
-                  </span>
-                </motion.button>
-              )
-            })}
-          </div>
-        </motion.div>
-
-        {/* 5. POPULAR MEDICINES GRID */}
-        <motion.div variants={itemVariants} className="flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-extrabold text-slate-900 dark:text-white">
-              {t.popularMedicines}
-            </h2>
-            <span className="text-xs text-slate-400 font-semibold">
-              {homeMedicines.length} ta dori
-            </span>
+                  <span>{t.filterClear}</span>
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+            {!isLoading && (
+              <span className="text-xs text-neutral-400 font-semibold">
+                {homeMedicines.length} {t.medicineCount}
+              </span>
+            )}
           </div>
 
-          <div className="grid grid-cols-2 gap-3.5">
-            {homeMedicines.map((med) => {
-              const isFav = favorites.includes(med.id)
-              const isAdded = addedItems.includes(med.id)
+          {/* LOADING SHIMMER STATE */}
+          {isLoading && (
+            <div className="grid grid-cols-2 gap-3.5">
+              {[1, 2, 3, 4].map((n) => (
+                <div key={n} className="bg-white dark:bg-neutral-900 rounded-2xl p-3 border border-neutral-200 dark:border-neutral-800 animate-pulse flex flex-col justify-between h-56">
+                  <div className="w-full aspect-square bg-neutral-100 dark:bg-neutral-800 rounded-xl mb-3" />
+                  <div className="h-3 bg-neutral-100 dark:bg-neutral-800 rounded w-2/3 mb-2" />
+                  <div className="h-4 bg-neutral-100 dark:bg-neutral-800 rounded w-full mb-2" />
+                  <div className="h-3 bg-neutral-100 dark:bg-neutral-800 rounded w-1/2" />
+                </div>
+              ))}
+            </div>
+          )}
 
-              return (
-                <Card key={med.id} hoverable className="p-3 flex flex-col justify-between">
-                  {/* Upper 80% Photo Box Container */}
-                  <div className="relative w-full aspect-square rounded-xl bg-slate-100 dark:bg-[#252528] flex items-center justify-center p-2 mb-2.5 overflow-hidden">
-                    <img
-                      src={med.img}
-                      alt={med.name}
-                      className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-300 hover:scale-105"
-                    />
+          {/* FETCH ERROR STATE */}
+          {fetchError && !isLoading && (
+            <div className="flex flex-col items-center justify-center py-10 text-center bg-white dark:bg-neutral-900 border border-red-200 dark:border-red-900/40 rounded-2xl p-4">
+              <p className="text-xs font-bold text-red-600 dark:text-red-400 mb-3">{fetchError}</p>
+              <button
+                onClick={loadData}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-xs hover:bg-emerald-700"
+              >
+                <RefreshCw size={14} />
+                <span>{t.retryLoad}</span>
+              </button>
+            </div>
+          )}
 
-                    {/* Rx Badge (Rendered ONLY if rx / prescription_required is true) */}
-                    {med.rx && (
-                      <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase shadow-xs bg-red-500 text-white">
-                        {t.rxRequired}
-                      </span>
-                    )}
+          {/* EMPTY STATE */}
+          {!isLoading && !fetchError && homeMedicines.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-16 text-center bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-xs">
+              <div className="w-16 h-16 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-3">
+                <Pill size={28} className="text-neutral-400" />
+              </div>
+              <h3 className="text-sm font-extrabold text-neutral-900 dark:text-white mb-1">
+                {t.nothingFound}
+              </h3>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs">
+                {t.nothingFoundHint}
+              </p>
+            </div>
+          )}
 
-                    {/* Heart Icon Button */}
-                    <button
-                      onClick={() => toggleFavorite(med.id)}
-                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 dark:bg-[#1E1E20]/90 backdrop-blur-xs flex items-center justify-center text-slate-400 hover:text-red-500 shadow-xs btn-touch transition-colors"
-                    >
-                      <Heart size={14} className={isFav ? 'fill-red-500 text-red-500' : ''} />
-                    </button>
-                  </div>
-
-                  {/* Product Metadata */}
-                  <div className="flex flex-col gap-1 mb-3 flex-1">
-                    <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase truncate">
-                      {med.store}
-                    </span>
-                    <h3 className="text-xs font-extrabold text-slate-900 dark:text-white line-clamp-1 leading-snug">
-                      {med.name}
-                    </h3>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1 font-medium">
-                      {getActiveIngredient(med)}
-                    </p>
-
-                    {/* Rating */}
-                    <div className="flex items-center gap-1 mt-0.5">
-                      <Star size={11} className="fill-amber-400 text-amber-400" />
-                      <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300">{med.rating}</span>
-                      <span className="text-[10px] text-slate-400">({getReviewsText(med.reviews)})</span>
-                    </div>
-                  </div>
-
-                  {/* Price & Add to Cart CTA */}
-                  <div className="flex items-end justify-between pt-2 border-t border-slate-100 dark:border-zinc-800/60 mt-auto">
-                    <div>
-                      <span className="text-[10px] text-slate-400 line-through block leading-none">
-                        {med.oldPrice.toLocaleString()} so'm
-                      </span>
-                      <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 leading-tight">
-                        {med.price.toLocaleString()} so'm
-                      </span>
-                    </div>
-
-                    <motion.button
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => addToCart(med.id)}
-                      className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors shadow-xs btn-touch ${
-                        isAdded ? 'bg-emerald-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                      }`}
-                    >
-                      {isAdded ? <Check size={16} /> : <ShoppingCart size={15} />}
-                    </motion.button>
-                  </div>
-                </Card>
-              )
-            })}
-          </div>
+          {/* REFACTORED MEDICATION CARD GRID */}
+          {!isLoading && !fetchError && homeMedicines.length > 0 && (
+            <div className="grid grid-cols-2 gap-3.5">
+              {homeMedicines.map((med) => (
+                <MedicationCard
+                  key={med.id}
+                  med={med}
+                  lang={lang}
+                  cartQuantity={cartQuantities[med.id] || 0}
+                  onUpdateQuantity={updateQuantity}
+                />
+              ))}
+            </div>
+          )}
         </motion.div>
       </motion.div>
 
-      {/* DEDICATED FULL-SCREEN SEARCH OVERLAY / MODAL */}
+      {/* CATEGORY FILTER BOTTOM SHEET MODAL */}
+      <AnimatePresence>
+        {showCategoryModal && (
+          <>
+            <motion.div
+              className="fixed inset-0 z-[100] bg-neutral-900/50 dark:bg-black/75 backdrop-blur-xs"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowCategoryModal(false)}
+            />
+            <motion.div
+              className="fixed bottom-0 inset-x-0 z-[100] bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 rounded-t-3xl safe-bottom p-5 shadow-2xl max-w-[430px] mx-auto h-[50vh] max-h-[50vh] flex flex-col"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            >
+              <div className="w-10 h-1 bg-neutral-200 dark:bg-neutral-700 rounded-full mx-auto mb-3 shrink-0" />
+
+              <div className="flex items-center justify-between mb-3 shrink-0">
+                <h3 className="text-base font-extrabold text-neutral-900 dark:text-white flex items-center gap-2">
+                  <SlidersHorizontal size={18} className="text-emerald-600 dark:text-emerald-400" />
+                  {t.categories}
+                </h3>
+                <button
+                  onClick={() => setShowCategoryModal(false)}
+                  className="w-8 h-8 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-500 hover:text-neutral-700 dark:hover:text-white transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Icon-Free Text-Only Category List (No Numbers, Vertical Scroll) */}
+              <div className="overflow-y-auto flex-1 no-scrollbar flex flex-col">
+                {/* All Categories Option */}
+                <motion.button
+                  whileTap={{ opacity: 0.8 }}
+                  onClick={() => {
+                    setActiveCategory('all')
+                    setShowCategoryModal(false)
+                  }}
+                  className={`
+                    flex items-center justify-between py-3 px-3.5 rounded-xl border-b transition-all duration-150 text-left shrink-0
+                    ${activeCategory === 'all'
+                      ? 'bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold'
+                      : 'border-neutral-100 dark:border-neutral-800/60 text-neutral-700 dark:text-neutral-200 font-medium hover:bg-neutral-100/70 dark:hover:bg-neutral-800'}
+                  `}
+                >
+                  <span className="text-sm tracking-wide">
+                    {lang === 'UZ' || lang === 'OZ' ? 'Barchasi' : lang === 'RU' ? 'Все категории' : 'All Categories'}
+                  </span>
+                  {activeCategory === 'all' && (
+                    <Check size={16} strokeWidth={2.5} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  )}
+                </motion.button>
+
+                {/* Individual Category List Items (No Numbers) */}
+                {categories.map((cat, idx) => {
+                  const catId = cat.id || `cat-${idx}`
+                  const isSelected = activeCategory === catId
+                  const catLabel = getCategoryName(cat, lang) || cat.name || 'Kategoriya'
+
+                  return (
+                    <motion.button
+                      key={catId}
+                      whileTap={{ opacity: 0.8 }}
+                      onClick={() => {
+                        setActiveCategory(catId)
+                        setShowCategoryModal(false)
+                      }}
+                      className={`
+                        flex items-center justify-between py-3 px-3.5 rounded-xl border-b transition-all duration-150 text-left shrink-0
+                        ${isSelected
+                          ? 'bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold'
+                          : 'border-neutral-100 dark:border-neutral-800/60 text-neutral-700 dark:text-neutral-200 font-medium hover:bg-neutral-100/70 dark:hover:bg-neutral-800'}
+                      `}
+                    >
+                      <span className="text-sm tracking-wide">{catLabel}</span>
+                      {isSelected && (
+                        <Check size={16} strokeWidth={2.5} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      )}
+                    </motion.button>
+                  )
+                })}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* SEARCH MODAL */}
       <AnimatePresence>
         {showSearchModal && (
           <motion.div
@@ -505,10 +559,9 @@ export const Home: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-slate-50 dark:bg-[#121212] flex flex-col transition-colors duration-200 overflow-hidden"
+            className="fixed inset-0 z-50 bg-white dark:bg-neutral-950 flex flex-col transition-colors duration-200 overflow-hidden"
           >
-            {/* TOP BAR: Back Arrow (←), Search Input, Clear Button, Scan Button */}
-            <div className="bg-white dark:bg-[#141416] border-b border-slate-200/80 dark:border-zinc-800 px-4 py-3 safe-top flex items-center gap-3 shadow-xs">
+            <div className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-4 py-3 safe-top flex items-center gap-3 shadow-xs">
               <motion.button
                 whileTap={{ scale: 0.92 }}
                 onClick={() => setShowSearchModal(false)}
@@ -517,8 +570,8 @@ export const Home: React.FC = () => {
                 <ArrowLeft size={20} />
               </motion.button>
 
-              <div className="flex-1 flex items-center bg-slate-100 dark:bg-[#1E1E20] border border-slate-200 dark:border-zinc-800 rounded-2xl h-11 px-3 gap-2">
-                <Search size={17} className="text-slate-400 shrink-0" />
+              <div className="flex-1 flex items-center bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 rounded-2xl h-11 px-3 gap-2">
+                <Search size={17} className="text-neutral-400 shrink-0" />
                 <input
                   ref={searchInputRef}
                   type="text"
@@ -526,7 +579,7 @@ export const Home: React.FC = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t.searchPlaceholder}
                   style={{ fontSize: '16px' }}
-                  className="flex-1 bg-transparent text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-medium focus:outline-none"
+                  className="flex-1 bg-transparent text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 font-medium focus:outline-none"
                 />
                 {searchQuery && (
                   <button
@@ -538,7 +591,6 @@ export const Home: React.FC = () => {
                 )}
               </div>
 
-              {/* Camera Scan Button */}
               <motion.button
                 whileTap={{ scale: 0.92 }}
                 onClick={() => {
@@ -551,14 +603,12 @@ export const Home: React.FC = () => {
               </motion.button>
             </div>
 
-            {/* SEARCH CONTENT BODY */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-6">
-              {/* RECENT SEARCH CHIPS (When input is empty) */}
               {!searchQuery && (
                 <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-400 text-xs font-bold uppercase tracking-wider">
                     <History size={14} className="text-emerald-600 dark:text-emerald-400" />
-                    <span>Oxirgi qidiruvlar</span>
+                    <span>{t.lastSearches}</span>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {RECENT_SEARCHES.map((term, i) => (
@@ -566,7 +616,7 @@ export const Home: React.FC = () => {
                         key={i}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setSearchQuery(term)}
-                        className="px-3.5 py-2 rounded-full bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:border-emerald-500 transition-colors shadow-xs"
+                        className="px-3.5 py-2 rounded-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:border-emerald-500 transition-colors shadow-xs"
                       >
                         🔍 {term}
                       </motion.button>
@@ -575,44 +625,58 @@ export const Home: React.FC = () => {
                 </div>
               )}
 
-              {/* LIVE RESULTS (When typing or empty) */}
-              {/* SECTION 1: DORILAR (Medicines) */}
               {searchFilteredMedicines.length > 0 && (
                 <div className="flex flex-col gap-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-extrabold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-                      <Pill size={15} className="text-emerald-600 dark:text-emerald-400" />
-                      Dorilar ({searchFilteredMedicines.length})
-                    </h3>
-                  </div>
+                  <h3 className="text-xs font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <Pill size={15} className="text-emerald-600 dark:text-emerald-400" />
+                    {t.medicines} ({searchFilteredMedicines.length})
+                  </h3>
 
                   <div className="flex flex-col gap-2.5">
                     {searchFilteredMedicines.map((med) => {
-                      const isAdded = addedItems.includes(med.id)
+                      const qty = cartQuantities[med.id] || 0
+                      const title = getLocalizedTitle(med, lang)
+                      const pharmName = getPharmacyName(med.pharmacies)
+                      const catName = getCategoryName(med.categories, lang)
+
                       return (
                         <div
-                          key={med.id}
-                          className="bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 rounded-2xl p-3 flex items-center gap-3.5 shadow-xs"
-                        >
-                          <div className="w-16 h-16 rounded-xl bg-slate-100 dark:bg-[#252528] flex items-center justify-center p-1.5 shrink-0 overflow-hidden">
-                            <img src={med.img} alt={med.name} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
+                        key={med.id}
+                        className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3 flex items-center gap-3.5 shadow-xs"
+                      >
+                          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-800">
+                            <img
+                              src={getMedicationImage(med)}
+                              alt={title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80'
+                              }}
+                            />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase">{med.store}</span>
-                            <h4 className="text-xs font-extrabold text-slate-900 dark:text-white truncate">{med.name}</h4>
-                            <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{getActiveIngredient(med)}</p>
-                            <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 block">
-                              {med.price.toLocaleString()} so'm
-                            </span>
+                            {pharmName && (
+                              <div className="flex items-center gap-1">
+                                <PharmacyLogoBadge pharmacy={med.pharmacies} name={pharmName} />
+                                <span className="text-[10px] font-bold text-neutral-400 uppercase truncate">{pharmName}</span>
+                              </div>
+                            )}
+                            <h4 className="text-xs font-extrabold text-neutral-900 dark:text-white truncate">{title}</h4>
+                            {catName && <p className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate">{catName}</p>}
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
+                                {med.price.toLocaleString()} UZS
+                              </span>
+                            </div>
                           </div>
                           <motion.button
                             whileTap={{ scale: 0.9 }}
-                            onClick={() => addToCart(med.id)}
+                            onClick={() => updateQuantity(med.id, qty > 0 ? 0 : 1)}
                             className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-xs btn-touch ${
-                              isAdded ? 'bg-emerald-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                              qty > 0 ? 'bg-emerald-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
                             }`}
                           >
-                            {isAdded ? <Check size={16} /> : <ShoppingCart size={16} />}
+                            <ShoppingCart size={16} />
                           </motion.button>
                         </div>
                       )
@@ -621,31 +685,26 @@ export const Home: React.FC = () => {
                 </div>
               )}
 
-              {/* SECTION 2: DORIXONALAR (Pharmacies) */}
-              {searchFilteredVendors.length > 0 && (
+              {searchFilteredPharmacies.length > 0 && (
                 <div className="flex flex-col gap-3">
-                  <h3 className="text-xs font-extrabold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+                  <h3 className="text-xs font-extrabold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                     <Store size={15} className="text-emerald-600 dark:text-emerald-400" />
-                    Dorixonalar ({searchFilteredVendors.length})
+                    {t.pharmacies} ({searchFilteredPharmacies.length})
                   </h3>
 
                   <div className="flex flex-col gap-2">
-                    {searchFilteredVendors.map((vendor) => (
+                    {searchFilteredPharmacies.map((pharm, idx) => (
                       <div
-                        key={vendor.id}
+                        key={pharm.id}
                         onClick={() => {
                           setShowSearchModal(false)
                           navigate('/map')
                         }}
-                        className="bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 rounded-2xl p-3 flex items-center justify-between cursor-pointer hover:border-emerald-500 transition-colors shadow-xs"
+                        className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3 flex items-center justify-between cursor-pointer hover:border-emerald-500 transition-colors shadow-xs"
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-xl ${vendor.color} text-white flex items-center justify-center text-sm font-extrabold`}>
-                            {vendor.name.charAt(0)}
-                          </div>
+                          <PharmacyLogoBadge pharmacy={pharm} name={pharm.name || ''} colorIdx={idx} />
                           <div>
-                            <h4 className="text-xs font-extrabold text-slate-900 dark:text-white">{vendor.name}</h4>
-                            <span className="text-[10px] text-slate-400 font-medium">⏱️ {vendor.time} • ⭐ {vendor.rating}</span>
                           </div>
                         </div>
                         <ChevronRight size={16} className="text-slate-400" />
@@ -655,17 +714,16 @@ export const Home: React.FC = () => {
                 </div>
               )}
 
-              {/* EMPTY STATE */}
-              {searchQuery && searchFilteredMedicines.length === 0 && searchFilteredVendors.length === 0 && (
+              {searchQuery && searchFilteredMedicines.length === 0 && searchFilteredPharmacies.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="w-18 h-18 rounded-2xl bg-slate-100 dark:bg-[#1E1E20] border border-slate-200 dark:border-zinc-800 flex items-center justify-center mb-4 shadow-xs">
-                    <Search size={32} className="text-slate-400" />
+                  <div className="w-18 h-18 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center mb-4 shadow-xs">
+                    <Search size={32} className="text-neutral-400" />
                   </div>
-                  <h3 className="text-sm font-extrabold text-slate-900 dark:text-white mb-1">
-                    Dori yoki dorixona topilmadi
+                  <h3 className="text-sm font-extrabold text-neutral-900 dark:text-white mb-1">
+                    {t.nothingFound}
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
-                    Iltimos, dori nomini yoki faol moddasini to'g'ri kiritganingizga ishonch hosil qiling.
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs leading-relaxed">
+                    {t.nothingFoundHint}
                   </p>
                 </div>
               )}
