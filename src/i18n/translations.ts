@@ -78,6 +78,29 @@ export interface Translations {
   savedAddresses: string
   noResults: string
 
+  // Home — banners
+  bannerAiTag: string
+  bannerAiTitle: string
+  bannerAiSubtitle: string
+  bannerAiCta: string
+  bannerGrandTag: string
+  bannerGrandTitle: string
+  bannerGrandSubtitle: string
+  bannerGrandCta: string
+  bannerRegionalTag: string
+  bannerRegionalTitle: string
+  bannerRegionalSubtitle: string
+  bannerRegionalCta: string
+  // Home — misc inline text
+  filterClear: string
+  retryLoad: string
+  medicineCount: string
+  nothingFound: string
+  nothingFoundHint: string
+  lastSearches: string
+  medicines: string
+  pharmacies: string
+
   // Map
   mapTitle: string
   mapSubtitle: string
@@ -170,6 +193,27 @@ const uz: Translations = {
   savedAddresses: 'Saqlangan manzillar',
   noResults: 'Hech narsa topilmadi',
 
+  bannerAiTag: 'PHARMA AI SCAN',
+  bannerAiTitle: 'Dori qutisini skanerlang',
+  bannerAiSubtitle: "Qutini rasmga oling — AI dori haqida barcha ma'lumotni topib beradi.",
+  bannerAiCta: 'Sinab ko\'rish →',
+  bannerGrandTag: 'GRAND PHARM',
+  bannerGrandTitle: 'Kafolatlangan dori sifati',
+  bannerGrandSubtitle: 'Sertifikatlangan dorilar va eng keng assortiment.',
+  bannerGrandCta: 'Dorixonaga o\'tish →',
+  bannerRegionalTag: 'QASHQADARYO REGIONAL',
+  bannerRegionalTitle: 'Qashqadaryoning eng yirik tarmog\'i',
+  bannerRegionalSubtitle: 'Barcha zarur dorilar va tibbiy buyumlar bir joyda.',
+  bannerRegionalCta: 'Dorixonaga o\'tish →',
+  filterClear: 'Filtr tozalash',
+  retryLoad: 'Qayta urinish',
+  medicineCount: 'ta dori',
+  nothingFound: 'Kechirasiz, so\'ralgan dori yoki ma\'lumot bazada topilmadi.',
+  nothingFoundHint: 'Iltimos, dori nomini to\'g\'ri yozganingizni tekshiring yoki boshqa kategoriyani tanlang.',
+  lastSearches: 'Oxirgi qidiruvlar',
+  medicines: 'Dorilar',
+  pharmacies: 'Dorixonalar',
+
   mapTitle: 'Dorixonalar xaritasi',
   mapSubtitle: 'Yaqin atrofingizdagi barcha dorixonalar',
 
@@ -257,6 +301,27 @@ const oz: Translations = {
   markAllAsRead: 'Барчасини ўқилган деб белгилаш',
   savedAddresses: 'Сақланган манзиллар',
   noResults: 'Ҳеч нарса топилмади',
+
+  bannerAiTag: 'PHARMA AI SCAN',
+  bannerAiTitle: 'Дори қутисини сканерланг',
+  bannerAiSubtitle: 'Қутини расмга олинг — AI дори ҳақида барча маълумотни топиб беради.',
+  bannerAiCta: 'Синаб кўриш →',
+  bannerGrandTag: 'GRAND PHARM',
+  bannerGrandTitle: 'Кафолатланган дори сифати',
+  bannerGrandSubtitle: 'Сертификатланган дорилар ва энг кенг ассортимент.',
+  bannerGrandCta: 'Дорихонага ўтиш →',
+  bannerRegionalTag: 'ҚАШҚАДАРЁ РЕГИОНАЛ',
+  bannerRegionalTitle: 'Қашқадарёнинг энг йирик тармоғи',
+  bannerRegionalSubtitle: 'Барча зарур дорилар ва тиббий буюмлар бир жойда.',
+  bannerRegionalCta: 'Дорихонага ўтиш →',
+  filterClear: 'Фильтрни тозалаш',
+  retryLoad: 'Қайта уриниш',
+  medicineCount: 'та дори',
+  nothingFound: 'Кечирасиз, сўралган дори ёки маълумот базада топилмади.',
+  nothingFoundHint: 'Илтимос, дори номини тўғри ёзганингизни текширинг ёки бошқа категорияни танланг.',
+  lastSearches: 'Охирги қидирувлар',
+  medicines: 'Дорилар',
+  pharmacies: 'Дорихоналар',
 
   mapTitle: 'Дорихоналар харитаси',
   mapSubtitle: 'Яқин атрофингиздаги барча дорихоналар',
@@ -346,6 +411,27 @@ const ru: Translations = {
   savedAddresses: 'Сохраненные адреса',
   noResults: 'Ничего не найдено',
 
+  bannerAiTag: 'PHARMA AI SCAN',
+  bannerAiTitle: 'Сканируйте упаковку лекарства',
+  bannerAiSubtitle: 'Сфотографируйте — AI найдёт всю информацию о лекарстве.',
+  bannerAiCta: 'Попробовать →',
+  bannerGrandTag: 'GRAND PHARM',
+  bannerGrandTitle: 'Гарантированное качество',
+  bannerGrandSubtitle: 'Сертифицированные лекарства и широкий ассортимент.',
+  bannerGrandCta: 'Перейти в аптеку →',
+  bannerRegionalTag: 'QASHQADARYO REGIONAL',
+  bannerRegionalTitle: 'Крупнейшая сеть Кашкадарьи',
+  bannerRegionalSubtitle: 'Все необходимые лекарства и медтовары в одном месте.',
+  bannerRegionalCta: 'Перейти в аптеку →',
+  filterClear: 'Сбросить фильтр',
+  retryLoad: 'Повторить',
+  medicineCount: 'лекарств',
+  nothingFound: 'Извините, запрошенное лекарство не найдено в базе.',
+  nothingFoundHint: 'Проверьте правильность написания или выберите другую категорию.',
+  lastSearches: 'Последние запросы',
+  medicines: 'Лекарства',
+  pharmacies: 'Аптеки',
+
   mapTitle: 'Карта аптек',
   mapSubtitle: 'Все аптеки поблизости',
 
@@ -433,6 +519,27 @@ const en: Translations = {
   markAllAsRead: 'Mark all as read',
   savedAddresses: 'Saved addresses',
   noResults: 'No results found',
+
+  bannerAiTag: 'PHARMA AI SCAN',
+  bannerAiTitle: 'Scan your medicine box',
+  bannerAiSubtitle: 'Take a photo — AI finds all information about the medicine instantly.',
+  bannerAiCta: 'Try it →',
+  bannerGrandTag: 'GRAND PHARM',
+  bannerGrandTitle: 'Guaranteed medicine quality',
+  bannerGrandSubtitle: 'Certified medicines and the widest selection.',
+  bannerGrandCta: 'Go to pharmacy →',
+  bannerRegionalTag: 'QASHQADARYO REGIONAL',
+  bannerRegionalTitle: "Qashqadaryo's largest network",
+  bannerRegionalSubtitle: 'All essential medicines and medical supplies in one place.',
+  bannerRegionalCta: 'Go to pharmacy →',
+  filterClear: 'Clear filter',
+  retryLoad: 'Retry',
+  medicineCount: 'medicines',
+  nothingFound: 'Sorry, the requested medicine was not found in the database.',
+  nothingFoundHint: 'Please check the spelling or try a different category.',
+  lastSearches: 'Recent searches',
+  medicines: 'Medicines',
+  pharmacies: 'Pharmacies',
 
   mapTitle: 'Pharmacy Map',
   mapSubtitle: 'All pharmacies near you',

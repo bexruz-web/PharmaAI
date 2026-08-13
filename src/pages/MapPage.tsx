@@ -9,8 +9,6 @@ export const MapPage: React.FC = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-[#121212] min-h-full flex flex-col pb-24 transition-colors duration-200">
-      <div className="h-[60px]" />
-
       {/* Map placeholder */}
       <div className="flex-1 relative overflow-hidden mx-4 mt-3 rounded-2xl min-h-[300px]">
         {/* Fake map grid */}

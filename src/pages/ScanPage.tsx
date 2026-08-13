@@ -19,8 +19,6 @@ export const ScanPage: React.FC = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-[#121212] min-h-full flex flex-col pb-24 transition-colors duration-200">
-      <div className="h-[60px]" />
-
       <div className="flex-1 flex flex-col items-center px-4 pt-4">
         {/* Title */}
         <motion.div

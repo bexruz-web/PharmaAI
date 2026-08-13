@@ -1,36 +1,25 @@
 // src/pages/CartPage.tsx
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ShoppingCart, Plus, Minus, Trash2, ChevronRight } from 'lucide-react'
+import { ShoppingCart, Plus, Minus, Trash2, ChevronRight, Pill } from 'lucide-react'
 import { useLangStore } from '../stores/langStore'
 
-const MOCK_ITEMS = [
-  {
-    id: 1,
-    name: 'Paracetamol 500mg',
-    brand: 'Pharmex',
-    price: 12000,
-    qty: 2,
-    img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=200&h=200',
-  },
-  {
-    id: 2,
-    name: "No-shpa 40mg",
-    brand: 'Chinoin',
-    price: 24000,
-    qty: 1,
-    img: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&q=80&w=200&h=200',
-  },
-]
+export interface CartItem {
+  id: string
+  name: string
+  brand?: string
+  price: number
+  qty: number
+}
 
 export const CartPage: React.FC = () => {
   const { t } = useLangStore()
-  const [items, setItems] = React.useState(MOCK_ITEMS)
+  const [items, setItems] = useState<CartItem[]>([])
 
-  const updateQty = (id: number, delta: number) => {
+  const updateQty = (id: string, delta: number) => {
     setItems((prev) =>
       prev
-        .map((it) => it.id === id ? { ...it, qty: it.qty + delta } : it)
+        .map((it) => (it.id === id ? { ...it, qty: it.qty + delta } : it))
         .filter((it) => it.qty > 0)
     )
   }
@@ -39,8 +28,6 @@ export const CartPage: React.FC = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-[#121212] min-h-full flex flex-col pb-24 transition-colors duration-200">
-      <div className="h-[60px]" />
-
       <div className="px-4 pt-4">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
@@ -72,14 +59,14 @@ export const CartPage: React.FC = () => {
                   transition={{ delay: i * 0.08 }}
                   className="bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 rounded-2xl p-3 flex items-center gap-3 shadow-xs"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-[#252528] overflow-hidden shrink-0 flex items-center justify-center p-1">
-                    <img src={item.img} alt={item.name} className="w-full h-full object-contain" />
+                  <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-[#252528] overflow-hidden shrink-0 flex items-center justify-center p-1 text-emerald-600 dark:text-emerald-400">
+                    <Pill size={24} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-extrabold text-slate-900 dark:text-white text-xs truncate">{item.name}</p>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">{item.brand}</p>
+                    {item.brand && <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">{item.brand}</p>}
                     <p className="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-0.5">
-                      {(item.price * item.qty).toLocaleString()} so'm
+                      {(item.price * item.qty).toLocaleString()} UZS
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2 shrink-0">
@@ -106,7 +93,6 @@ export const CartPage: React.FC = () => {
               ))}
             </div>
 
-            {/* Summary */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -119,7 +105,7 @@ export const CartPage: React.FC = () => {
               </div>
               <div className="flex justify-between font-extrabold text-slate-900 dark:text-white text-sm">
                 <span>Umumiy summa</span>
-                <span className="text-emerald-600 dark:text-emerald-400">{total.toLocaleString()} so'm</span>
+                <span className="text-emerald-600 dark:text-emerald-400">{total.toLocaleString()} UZS</span>
               </div>
             </motion.div>
 

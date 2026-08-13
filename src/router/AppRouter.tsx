@@ -27,11 +27,11 @@ const Protected: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <>{children}</>
 }
 
-/** Main layout (header + content + bottom nav) */
+/** Main layout (fixed header + scrollable content + fixed bottom nav) */
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="flex flex-col h-full w-full bg-dark-bg relative overflow-hidden">
+  <div className="h-screen max-h-screen flex flex-col overflow-hidden w-full bg-white dark:bg-neutral-950 relative">
     <Header />
-    <main className="flex-1 overflow-y-auto pt-[72px] pb-[72px] scrollbar-none">{children}</main>
+    <main className="flex-1 overflow-y-auto no-scrollbar w-full">{children}</main>
     <BottomNav />
   </div>
 )

@@ -28,9 +28,8 @@ export const BottomNav: React.FC = () => {
   const { t }    = useLangStore()
 
   return (
-    <nav className="absolute bottom-0 inset-x-0 z-40 safe-bottom">
-      <div className="bg-white/95 dark:bg-[#1A1A1C]/95 border-t border-slate-200/80 dark:border-zinc-800/80 backdrop-blur-md transition-colors duration-200">
-        <div className="flex items-center justify-around h-15 px-2">
+    <nav className="sticky bottom-0 left-0 right-0 z-50 w-full shrink-0 safe-bottom bg-white/95 dark:bg-[#1A1A1C]/95 border-t border-slate-200/80 dark:border-zinc-800/80 backdrop-blur-md transition-colors duration-200">
+      <div className="flex items-center justify-around h-15 px-2">
           {NAV_ITEMS.map((item) => {
             const isActive = location.pathname === item.path
             const Icon     = item.icon
@@ -90,7 +89,6 @@ export const BottomNav: React.FC = () => {
             )
           })}
         </div>
-      </div>
     </nav>
   )
 }
