@@ -88,7 +88,7 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
   }
 
   return (
-    <Card hoverable className="p-0 flex flex-col justify-between h-full bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 rounded-2xl shadow-xs overflow-hidden">
+    <Card hoverable padding="none" className="flex flex-col justify-between h-full bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 rounded-2xl shadow-xs overflow-hidden">
       {/* 1. TOP IMAGE CONTAINER & OVERLAYS (Covers top, left, and right sides of card edge-to-edge) */}
       <div className="relative w-full aspect-square bg-slate-100 dark:bg-[#252528] overflow-hidden">
         {/* Skeleton loading pulse */}
