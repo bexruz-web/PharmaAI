@@ -14,9 +14,6 @@ import {
   fetchMedications,
   fetchCategories,
   fetchPharmacies,
-  MOCK_MEDICATIONS,
-  MOCK_CATEGORIES,
-  MOCK_PHARMACIES,
   getLocalizedTitle,
   getLocalizedDescription,
   getCategoryName,
@@ -170,14 +167,12 @@ export const Home: React.FC = () => {
         fetchCategories(),
         fetchPharmacies(),
       ])
-      setMedications(medsData && medsData.length > 0 ? medsData : MOCK_MEDICATIONS)
-      setCategories(catsData && catsData.length > 0 ? catsData : MOCK_CATEGORIES)
-      setPharmacies(pharmsData && pharmsData.length > 0 ? pharmsData : MOCK_PHARMACIES)
+      setMedications(medsData)
+      setCategories(catsData)
+      setPharmacies(pharmsData)
     } catch (err: any) {
       console.error('Failed to load data from Supabase:', err)
-      setMedications(MOCK_MEDICATIONS)
-      setCategories(MOCK_CATEGORIES)
-      setPharmacies(MOCK_PHARMACIES)
+      setFetchError(err.message || 'Ma\'lumotlarni yuklashda xatolik yuz berdi')
     } finally {
       setIsLoading(false)
     }
@@ -236,15 +231,15 @@ export const Home: React.FC = () => {
     let matchesCategory = true
     if (activeCategory !== 'all') {
       matchesCategory =
-        med.category_id === activeCategory ||
+        String(med.category_id) === String(activeCategory) ||
         (Array.isArray(med.categories)
-          ? med.categories.some((c) => c.id === activeCategory)
-          : med.categories?.id === activeCategory)
+          ? med.categories.some((c) => String(c.id) === String(activeCategory))
+          : String(med.categories?.id) === String(activeCategory))
     }
 
     let matchesPharmacy = true
     if (selectedPharmacyId) {
-      matchesPharmacy = med.pharmacy_id === selectedPharmacyId
+      matchesPharmacy = String(med.pharmacy_id) === String(selectedPharmacyId)
     }
 
     return matchesCategory && matchesPharmacy
@@ -569,7 +564,7 @@ export const Home: React.FC = () => {
                       key={catId}
                       whileTap={{ opacity: 0.8 }}
                       onClick={() => {
-                        setActiveCategory(catId)
+                        setActiveCategory(String(catId))
                         setShowCategoryModal(false)
                       }}
                       className={`
