@@ -156,7 +156,7 @@ const uz: Translations = {
   termsOfUse: 'Foydalanish shartlari',
   privacyPolicy: 'Maxfiylik siyosati',
   termsTitle: 'Foydalanish shartlari va kelishuv',
-  termsContent: "PharmaAI platformasidan foydalanish orqali siz barcha shart va qoidalarga rozilik bildirasiz. Dori vositalarini buyurtma qilish va bron qilish faqat axborot-qidiruv xarakteriga ega bo'lib, retseptli dorilarni olishda shifokor retsepti taqdim etilishi shart.",
+  termsContent: "Pharmind platformasidan foydalanish orqali siz barcha shart va qoidalarga rozilik bildirasiz. Dori vositalarini buyurtma qilish va bron qilish faqat axborot-qidiruv xarakteriga ega bo'lib, retseptli dorilarni olishda shifokor retsepti taqdim etilishi shart.",
   privacyTitle: 'Maxfiylik va ma\'lumotlar xavfsizligi',
   privacyContent: "Biz sizning shaxsiy ma'lumotlaringiz (ismingiz va telefon raqamingiz) xavfsizligini ta'minlash uchun zamonaviy shifrlash texnologiyalaridan foydalanamiz. Platforma ma'lumotlari uchinchi shaxslarga berilmaydi va faqat xizmat ko'rsatish sifatini yaxshilash maqsadida qo'llaniladi.",
 
@@ -193,7 +193,7 @@ const uz: Translations = {
   savedAddresses: 'Saqlangan manzillar',
   noResults: 'Hech narsa topilmadi',
 
-  bannerAiTag: 'PHARMA AI SCAN',
+  bannerAiTag: 'PHARMIND SCAN',
   bannerAiTitle: 'Dori qutisini skanerlang',
   bannerAiSubtitle: "Qutini rasmga oling — AI dori haqida barcha ma'lumotni topib beradi.",
   bannerAiCta: 'Sinab ko\'rish →',
@@ -265,7 +265,7 @@ const oz: Translations = {
   termsOfUse: 'Фойдаланиш шартлари',
   privacyPolicy: 'Махфийлик сиёсати',
   termsTitle: 'Фойдаланиш шартлари ва келишув',
-  termsContent: "PharmaAI платформасидан фойдаланиш орқали сиз барча шарт ва қоидаларга розилик билдирасиз.",
+  termsContent: "Pharmind платформасидан фойдаланиш орқали сиз барча шарт ва қоидаларга розилик билдирасиз.",
   privacyTitle: 'Махфийлик ва маълумотлар хавфсизлиги',
   privacyContent: "Биз сизнинг шахсий маълумотларингиз хавфсизлигини таъминлаш учун замонавий шифрлаш технологияларидан фойдаланамиз.",
 
@@ -302,7 +302,7 @@ const oz: Translations = {
   savedAddresses: 'Сақланган манзиллар',
   noResults: 'Ҳеч нарса топилмади',
 
-  bannerAiTag: 'PHARMA AI SCAN',
+  bannerAiTag: 'PHARMIND SCAN',
   bannerAiTitle: 'Дори қутисини сканерланг',
   bannerAiSubtitle: 'Қутини расмга олинг — AI дори ҳақида барча маълумотни топиб беради.',
   bannerAiCta: 'Синаб кўриш →',
@@ -374,7 +374,7 @@ const ru: Translations = {
   termsOfUse: 'Условия использования',
   privacyPolicy: 'Политика конфиденциальности',
   termsTitle: 'Условия использования и соглашение',
-  termsContent: "Используя платформу PharmaAI, вы соглашаетесь со всеми условиями и правилами.",
+  termsContent: "Используя платформу Pharmind, вы соглашаетесь со всеми условиями и правилами.",
   privacyTitle: 'Конфиденциальность и безопасность',
   privacyContent: "Мы используем современные технологии шифрования для обеспечения безопасности ваших личных данных.",
 
@@ -411,7 +411,7 @@ const ru: Translations = {
   savedAddresses: 'Сохраненные адреса',
   noResults: 'Ничего не найдено',
 
-  bannerAiTag: 'PHARMA AI SCAN',
+  bannerAiTag: 'PHARMIND SCAN',
   bannerAiTitle: 'Сканируйте упаковку лекарства',
   bannerAiSubtitle: 'Сфотографируйте — AI найдёт всю информацию о лекарстве.',
   bannerAiCta: 'Попробовать →',
@@ -483,7 +483,7 @@ const en: Translations = {
   termsOfUse: 'Terms of Use',
   privacyPolicy: 'Privacy Policy',
   termsTitle: 'Terms of Use & Agreement',
-  termsContent: "By using the PharmaAI platform, you agree to all terms and conditions.",
+  termsContent: "By using the Pharmind platform, you agree to all terms and conditions.",
   privacyTitle: 'Privacy & Data Security',
   privacyContent: "We use modern encryption technologies to ensure the safety of your personal data.",
 
@@ -520,7 +520,7 @@ const en: Translations = {
   savedAddresses: 'Saved addresses',
   noResults: 'No results found',
 
-  bannerAiTag: 'PHARMA AI SCAN',
+  bannerAiTag: 'PHARMIND SCAN',
   bannerAiTitle: 'Scan your medicine box',
   bannerAiSubtitle: 'Take a photo — AI finds all information about the medicine instantly.',
   bannerAiCta: 'Try it →',

@@ -141,7 +141,7 @@ export const GeminiScannerModal: React.FC<GeminiScannerModalProps> = ({
         <div className="flex items-center justify-between text-white py-2">
           <div className="flex items-center gap-2">
             <Sparkles className="text-emerald-400" size={20} />
-            <span className="font-extrabold text-sm tracking-wide">PharmaAI Vision Scanner</span>
+            <span className="font-extrabold text-sm tracking-wide">Pharmind Vision Scanner</span>
           </div>
           <button
             onClick={onClose}

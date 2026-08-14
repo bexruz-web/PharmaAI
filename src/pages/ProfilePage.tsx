@@ -168,7 +168,7 @@ export const ProfilePage: React.FC = () => {
 
         {/* Version */}
         <motion.div variants={itemVariants}>
-          <p className="text-center text-[10px] text-slate-400 dark:text-slate-500 font-medium">PharmaAI v1.0.0 — Matte Edition</p>
+          <p className="text-center text-[10px] text-slate-400 dark:text-slate-500 font-medium">Pharmind v1.0.0 — Matte Edition</p>
         </motion.div>
       </motion.div>
     </div>

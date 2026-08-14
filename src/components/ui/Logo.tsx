@@ -119,8 +119,9 @@ export const Logo: React.FC<LogoProps> = ({
       <LogoIcon sizePx={iconPx} />
 
       <div className={`flex flex-col ${isVert ? 'items-center mt-2' : 'justify-center'}`}>
-        <span className={`${textSizes[size]} tracking-tight leading-none text-slate-900 dark:text-white transition-colors`}>
-          Pharma<span className="text-emerald-600 dark:text-emerald-400">AI</span>
+        <span className={`${textSizes[size]} tracking-tight leading-none transition-colors`}>
+          <span className="text-slate-900 dark:text-white">Phar</span>
+          <span className="text-emerald-500 dark:text-emerald-400">mind</span>
         </span>
 
         {showSubtitle && (

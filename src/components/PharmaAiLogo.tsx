@@ -1,26 +1,18 @@
 import React from 'react'
-import logoLight from '../assets/logo-full-light.png'
-import logoDark from '../assets/logo-full-dark.png'
+import { PharmaAiIcon } from './PharmaAiIcon'
 
 interface PharmaAiLogoProps {
   className?: string
 }
 
-export const PharmaAiLogo: React.FC<PharmaAiLogoProps> = ({ className = 'w-48 h-auto' }) => {
+export const PharmaAiLogo: React.FC<PharmaAiLogoProps> = ({ className = '' }) => {
   return (
-    <div className={`relative inline-flex items-center justify-center ${className}`}>
-      {/* Light mode version */}
-      <img
-        src={logoLight}
-        alt="PharmaAI Logo"
-        className="w-full h-auto dark:hidden block object-contain select-none"
-      />
-      {/* Dark mode version */}
-      <img
-        src={logoDark}
-        alt="PharmaAI Logo"
-        className="w-full h-auto dark:block hidden object-contain select-none"
-      />
+    <div className={`inline-flex items-center gap-2.5 ${className}`}>
+      <PharmaAiIcon className="w-9 h-9 object-contain shrink-0" />
+      <span className="text-2xl font-black tracking-tight">
+        <span className="text-neutral-900 dark:text-white">Phar</span>
+        <span className="text-emerald-500 dark:text-emerald-400">mind</span>
+      </span>
     </div>
   )
 }
