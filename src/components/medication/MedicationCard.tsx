@@ -89,8 +89,8 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
 
   return (
     <Card hoverable className="p-2.5 flex flex-col justify-between h-full bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 rounded-2xl shadow-xs overflow-hidden">
-      {/* 1. TOP IMAGE CONTAINER & OVERLAYS (Uniform 1:1 square dimensions) */}
-      <div className="relative w-full aspect-square rounded-xl bg-slate-50 dark:bg-[#252528] overflow-hidden border border-slate-200/60 dark:border-zinc-800/80 mb-2 flex items-center justify-center p-2">
+      {/* 1. TOP IMAGE CONTAINER & OVERLAYS (Full edge-to-edge cover like Uzum) */}
+      <div className="relative w-full aspect-square rounded-xl bg-slate-100 dark:bg-[#252528] overflow-hidden border border-slate-200/60 dark:border-zinc-800/80 mb-2">
         {/* Skeleton loading pulse */}
         {!isLoaded && (
           <div className="absolute inset-0 bg-slate-200 dark:bg-zinc-800 animate-pulse rounded-xl" />
@@ -106,7 +106,7 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
               setImgSrc(fallbackSrc)
             }
           }}
-          className={`w-full h-full object-contain transition-all duration-300 ${
+          className={`w-full h-full object-cover transition-all duration-300 ${
             isLoaded ? 'opacity-100 scale-100 hover:scale-105' : 'opacity-0 scale-95'
           }`}
         />

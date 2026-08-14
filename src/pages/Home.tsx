@@ -726,11 +726,11 @@ export const Home: React.FC = () => {
                           key={med.id}
                           className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3 flex items-center gap-3.5 shadow-xs"
                         >
-                          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200/60 dark:border-neutral-800 flex items-center justify-center p-1">
+                          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-800">
                             <img
                               src={getMedicationImage(med)}
                               alt={title}
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-cover"
                               onError={(e) => {
                                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80'
                               }}
