@@ -14,6 +14,9 @@ import {
   fetchMedications,
   fetchCategories,
   fetchPharmacies,
+  MOCK_MEDICATIONS,
+  MOCK_CATEGORIES,
+  MOCK_PHARMACIES,
   getLocalizedTitle,
   getLocalizedDescription,
   getCategoryName,
@@ -167,12 +170,14 @@ export const Home: React.FC = () => {
         fetchCategories(),
         fetchPharmacies(),
       ])
-      setMedications(medsData)
-      setCategories(catsData)
-      setPharmacies(pharmsData)
+      setMedications(medsData && medsData.length > 0 ? medsData : MOCK_MEDICATIONS)
+      setCategories(catsData && catsData.length > 0 ? catsData : MOCK_CATEGORIES)
+      setPharmacies(pharmsData && pharmsData.length > 0 ? pharmsData : MOCK_PHARMACIES)
     } catch (err: any) {
       console.error('Failed to load data from Supabase:', err)
-      setFetchError(err.message || 'Ma\'lumotlarni yuklashda xatolik yuz berdi')
+      setMedications(MOCK_MEDICATIONS)
+      setCategories(MOCK_CATEGORIES)
+      setPharmacies(MOCK_PHARMACIES)
     } finally {
       setIsLoading(false)
     }

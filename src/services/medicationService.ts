@@ -47,6 +47,61 @@ export interface Medication {
   pharmacies?: PharmacyData | PharmacyData[] | null
 }
 
+export const MOCK_PHARMACIES: PharmacyData[] = [
+  {
+    id: 'pharm-1',
+    name: 'Grand Pharm',
+    name_uz: 'Grand Pharm',
+    name_ru: 'Гранд Фарм',
+    name_en: 'Grand Pharm',
+    logo_url: 'https://images.unsplash.com/photo-1563213126-a4273aed2016?w=200&auto=format&fit=crop&q=80',
+    address: 'Toshkent sh., Yunusobod t., Amir Temur ko\'chasi 45',
+    rating: 4.9,
+    is_open: true,
+  },
+  {
+    id: 'pharm-2',
+    name: 'Best Pharm',
+    name_uz: 'Best Pharm',
+    name_ru: 'Бест Фарм',
+    name_en: 'Best Pharm',
+    logo_url: 'https://images.unsplash.com/photo-1586015555751-63bb77f4322a?w=200&auto=format&fit=crop&q=80',
+    address: 'Toshkent sh., Chilonzor t., Muqimiy ko\'chasi 12',
+    rating: 4.8,
+    is_open: true,
+  },
+  {
+    id: 'pharm-3',
+    name: 'Oksimed',
+    name_uz: 'Oksimed',
+    name_ru: 'Оксимед',
+    name_en: 'Oksimed',
+    logo_url: 'https://images.unsplash.com/photo-1576602976047-174e57a47881?w=200&auto=format&fit=crop&q=80',
+    address: 'Toshkent sh., Mirzo Ulug\'bek t., Mustaqillik shoh ko\'chasi 88',
+    rating: 4.7,
+    is_open: true,
+  },
+  {
+    id: 'pharm-4',
+    name: '999 Dorixona',
+    name_uz: '999 Dorixona',
+    name_ru: 'Аптека 999',
+    name_en: '999 Pharmacy',
+    logo_url: 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=200&auto=format&fit=crop&q=80',
+    address: 'Toshkent sh., Shayxontohur t., Navoiy ko\'chasi 21',
+    rating: 4.6,
+    is_open: true,
+  },
+]
+
+export const MOCK_CATEGORIES: CategoryData[] = [
+  { id: 'cat-1', name: 'Og\'riqqoldiruvchi', name_uz: 'Og\'riqqoldiruvchi', name_ru: 'Обезболивающие', name_en: 'Painkillers' },
+  { id: 'cat-2', name: 'Antibiotiklar', name_uz: 'Antibiotiklar', name_ru: 'Антибиотики', name_en: 'Antibiotics' },
+  { id: 'cat-3', name: 'Vitamolar', name_uz: 'Vitamolar va Minerallar', name_ru: 'Витамины и минералы', name_en: 'Vitamins & Minerals' },
+  { id: 'cat-4', name: 'Oshqozon-ichak', name_uz: 'Oshqozon-ichak', name_ru: 'ЖКТ', name_en: 'Digestive System' },
+  { id: 'cat-5', name: 'Grip va Shamollash', name_uz: 'Grip va Shamollash', name_ru: 'Простуда и грипп', name_en: 'Cold & Flu' },
+]
+
 export const MOCK_MEDICATIONS: Medication[] = [
   {
     id: 'med-paracetamol-250',
@@ -60,8 +115,8 @@ export const MOCK_MEDICATIONS: Medication[] = [
     is_in_stock: true,
     prescription_required: false,
     image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80',
-    categories: { id: 'cat-1', name_uz: 'Og\'riqqoldiruvchi', name_ru: 'Обезболивающие', name_en: 'Painkillers' },
-    pharmacies: { id: 'pharm-1', name: 'Grand Pharm', logo_url: 'https://images.unsplash.com/photo-1563213126-a4273aed2016?w=200' }
+    categories: MOCK_CATEGORIES[0],
+    pharmacies: MOCK_PHARMACIES[0]
   },
   {
     id: 'med-paracetamol-500',
@@ -75,8 +130,8 @@ export const MOCK_MEDICATIONS: Medication[] = [
     is_in_stock: true,
     prescription_required: false,
     image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80',
-    categories: { id: 'cat-1', name_uz: 'Og\'riqqoldiruvchi', name_ru: 'Обезболивающие', name_en: 'Painkillers' },
-    pharmacies: { id: 'pharm-2', name: 'Best Pharm', logo_url: null }
+    categories: MOCK_CATEGORIES[0],
+    pharmacies: MOCK_PHARMACIES[1]
   },
   {
     id: 'med-ketanov',
@@ -90,8 +145,8 @@ export const MOCK_MEDICATIONS: Medication[] = [
     is_in_stock: true,
     prescription_required: false,
     image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80',
-    categories: { id: 'cat-1', name_uz: 'Og\'riqqoldiruvchi', name_ru: 'Обезболивающие', name_en: 'Painkillers' },
-    pharmacies: { id: 'pharm-2', name: 'Best Pharm', logo_url: null }
+    categories: MOCK_CATEGORIES[0],
+    pharmacies: MOCK_PHARMACIES[1]
   },
   {
     id: 'med-nurofen',
@@ -105,8 +160,8 @@ export const MOCK_MEDICATIONS: Medication[] = [
     is_in_stock: true,
     prescription_required: false,
     image_url: 'https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=500&auto=format&fit=crop&q=80',
-    categories: { id: 'cat-1', name_uz: 'Og\'riqqoldiruvchi', name_ru: 'Обезболивающие', name_en: 'Painkillers' },
-    pharmacies: { id: 'pharm-1', name: 'Grand Pharm', logo_url: null }
+    categories: MOCK_CATEGORIES[0],
+    pharmacies: MOCK_PHARMACIES[0]
   },
   {
     id: 'med-aspirin',
@@ -120,8 +175,23 @@ export const MOCK_MEDICATIONS: Medication[] = [
     is_in_stock: true,
     prescription_required: false,
     image_url: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=500&auto=format&fit=crop&q=80',
-    categories: { id: 'cat-1', name_uz: 'Og\'riqqoldiruvchi', name_ru: 'Обезболивающие', name_en: 'Painkillers' },
-    pharmacies: { id: 'pharm-3', name: 'Oksimed', logo_url: null }
+    categories: MOCK_CATEGORIES[0],
+    pharmacies: MOCK_PHARMACIES[2]
+  },
+  {
+    id: 'med-noshpa',
+    title: 'No-Shpa 40 mg',
+    title_uz: 'No-Shpa 40 mg tabletka',
+    title_ru: 'Но-шпа 40 мг таблетки',
+    title_en: 'No-Shpa 40 mg tablets',
+    brand_name: 'Chinoin',
+    price: 26000,
+    dosage: '40 mg',
+    is_in_stock: true,
+    prescription_required: false,
+    image_url: 'https://images.unsplash.com/photo-1577401239170-897942555fb3?w=500&auto=format&fit=crop&q=80',
+    categories: MOCK_CATEGORIES[3],
+    pharmacies: MOCK_PHARMACIES[3]
   }
 ]
 
@@ -179,29 +249,35 @@ export const fetchMedications = async (): Promise<Medication[]> => {
 }
 
 export const fetchCategories = async (): Promise<CategoryData[]> => {
-  const { data, error } = await supabase
-    .from('categories')
-    .select('*')
+  try {
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
 
-  if (error) {
-    console.error('Error fetching categories from Supabase:', error)
-    return []
+    if (!error && data && data.length > 0) {
+      return data as CategoryData[]
+    }
+  } catch (err) {
+    console.warn('Error fetching categories from Supabase, using mock dataset:', err)
   }
 
-  return (data as CategoryData[]) || []
+  return MOCK_CATEGORIES
 }
 
 export const fetchPharmacies = async (): Promise<PharmacyData[]> => {
-  const { data, error } = await supabase
-    .from('pharmacies')
-    .select('*')
+  try {
+    const { data, error } = await supabase
+      .from('pharmacies')
+      .select('*')
 
-  if (error) {
-    console.error('Error fetching pharmacies from Supabase:', error)
-    return []
+    if (!error && data && data.length > 0) {
+      return data as PharmacyData[]
+    }
+  } catch (err) {
+    console.warn('Error fetching pharmacies from Supabase, using mock dataset:', err)
   }
 
-  return (data as PharmacyData[]) || []
+  return MOCK_PHARMACIES
 }
 
 // Fallback high-quality pharmaceutical images by category
@@ -228,9 +304,17 @@ export const getMedicationImage = (med: Medication): string => {
 }
 
 export const getPharmacyLogo = (pharmRelation: PharmacyData | PharmacyData[] | null | undefined): string | null => {
-  if (!pharmRelation) return null
+  if (!pharmRelation) return 'https://images.unsplash.com/photo-1563213126-a4273aed2016?w=200&auto=format&fit=crop&q=80'
   const pharm = Array.isArray(pharmRelation) ? pharmRelation[0] : pharmRelation
-  return pharm?.logo_url || null
+  if (pharm?.logo_url && pharm.logo_url.trim() !== '') {
+    return pharm.logo_url
+  }
+  const pharmName = (pharm?.name || pharm?.name_uz || '').toLowerCase()
+  if (pharmName.includes('grand')) return 'https://images.unsplash.com/photo-1563213126-a4273aed2016?w=200&auto=format&fit=crop&q=80'
+  if (pharmName.includes('best')) return 'https://images.unsplash.com/photo-1586015555751-63bb77f4322a?w=200&auto=format&fit=crop&q=80'
+  if (pharmName.includes('oksi')) return 'https://images.unsplash.com/photo-1576602976047-174e57a47881?w=200&auto=format&fit=crop&q=80'
+  if (pharmName.includes('999')) return 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=200&auto=format&fit=crop&q=80'
+  return 'https://images.unsplash.com/photo-1563213126-a4273aed2016?w=200&auto=format&fit=crop&q=80'
 }
 
 // Language helpers
