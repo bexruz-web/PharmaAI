@@ -88,12 +88,12 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
   }
 
   return (
-    <Card hoverable className="p-2.5 flex flex-col justify-between h-full bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 rounded-2xl shadow-xs overflow-hidden">
-      {/* 1. TOP IMAGE CONTAINER & OVERLAYS (Full edge-to-edge cover like Uzum) */}
-      <div className="relative w-full aspect-square rounded-xl bg-slate-100 dark:bg-[#252528] overflow-hidden border border-slate-200/60 dark:border-zinc-800/80 mb-2">
+    <Card hoverable className="p-0 flex flex-col justify-between h-full bg-white dark:bg-[#1E1E20] border border-slate-200/80 dark:border-zinc-800 rounded-2xl shadow-xs overflow-hidden">
+      {/* 1. TOP IMAGE CONTAINER & OVERLAYS (Covers top, left, and right sides of card edge-to-edge) */}
+      <div className="relative w-full aspect-square bg-slate-100 dark:bg-[#252528] overflow-hidden">
         {/* Skeleton loading pulse */}
         {!isLoaded && (
-          <div className="absolute inset-0 bg-slate-200 dark:bg-zinc-800 animate-pulse rounded-xl" />
+          <div className="absolute inset-0 bg-slate-200 dark:bg-zinc-800 animate-pulse" />
         )}
 
         <img
@@ -113,7 +113,7 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
 
         {/* Extra Small Prescription Badge ("Retseptli" on top-left) */}
         {med.prescription_required && (
-          <span className="absolute top-1.5 left-1.5 z-10 px-1.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase shadow-xs bg-red-500/85 text-white backdrop-blur-xs">
+          <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase shadow-xs bg-red-500/90 text-white backdrop-blur-xs">
             Retseptli
           </span>
         )}
@@ -167,8 +167,8 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
         </motion.div>
       </div>
 
-      {/* 2. CARD BODY LAYOUT (Below Image) */}
-      <div className="flex flex-col flex-1 justify-between">
+      {/* 2. CARD BODY LAYOUT (Below Image with p-2.5 padding) */}
+      <div className="p-2.5 flex flex-col flex-1 justify-between">
         <div>
           {/* Line 1: Price (Bold price directly under image) */}
           <div className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 leading-tight mb-0.5">
