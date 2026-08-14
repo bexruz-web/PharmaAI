@@ -17,6 +17,7 @@ import { MapPage }        from '../pages/MapPage'
 import { ScanPage }       from '../pages/ScanPage'
 import { CartPage }       from '../pages/CartPage'
 import { ProfilePage }    from '../pages/ProfilePage'
+import { NotificationsPage } from '../pages/NotificationsPage'
 import { useAuthStore }   from '../stores/authStore'
 import { useLangStore }   from '../stores/langStore'
 
@@ -113,6 +114,14 @@ export const AppRouter: React.FC = () => {
               <AppLayout>
                 <ProfilePage />
               </AppLayout>
+            </Protected>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <Protected>
+              <NotificationsPage />
             </Protected>
           }
         />
