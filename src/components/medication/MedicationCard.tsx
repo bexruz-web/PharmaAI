@@ -6,7 +6,7 @@ import { Card } from '../ui/Card'
 import {
   Medication,
   getLocalizedTitle,
-  getLocalizedForm,
+  getLocalizedDescription,
   getPharmacyName,
   getPharmacyLogo,
   getMedicationImage,
@@ -61,17 +61,8 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
   const fallbackSrc = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80'
 
   const title = getLocalizedTitle(med, lang)
-  const form = getLocalizedForm(med, lang)
+  const description = getLocalizedDescription(med, lang)
   const pharmacyName = getPharmacyName(med.pharmacies)
-
-  // Line 3: Dosage & Form (Format: "500mg • Tabletka")
-  const dosageFormParts: string[] = []
-  if (med.dosage && med.dosage.trim()) dosageFormParts.push(med.dosage.trim())
-  if (form && form.trim()) dosageFormParts.push(form.trim())
-  const dosageFormText = dosageFormParts.join(' • ')
-
-  // Line 4: Country Only (Format: "Germaniya")
-  const countryText = med.manufacturer_country && med.manufacturer_country.trim() ? med.manufacturer_country.trim() : null
 
   const handleIncrement = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -180,17 +171,10 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
             {title}
           </h3>
 
-          {/* Line 3: Dosage & Form (e.g. "500mg • Tabletka") */}
-          {dosageFormText && (
-            <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium line-clamp-1 mb-0.5">
-              {dosageFormText}
-            </p>
-          )}
-
-          {/* Line 4: Country Only (e.g. "Germaniya") */}
-          {countryText && (
-            <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 line-clamp-1 mb-1">
-              {countryText}
+          {/* Line 3: Description from Database (Tavsif) */}
+          {description && (
+            <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight mb-1">
+              {description}
             </p>
           )}
         </div>
