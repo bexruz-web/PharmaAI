@@ -8,8 +8,6 @@ import {
 } from 'lucide-react'
 import { useLangStore } from '../stores/langStore'
 import { useScannerStore } from '../stores/scannerStore'
-import { GeminiScannerModal } from '../components/scanner/GeminiScannerModal'
-import { type ScanAnalysisResult } from '../services/geminiScannerService'
 import { type Translations } from '../i18n/translations'
 import { MedicationCard } from '../components/medication/MedicationCard'
 import {
@@ -107,11 +105,7 @@ export const Home: React.FC = () => {
   const navigate = useNavigate()
   const { t, lang } = useLangStore()
   const {
-    isScannerOpen,
-    openScanner,
-    closeScanner,
     scanResult,
-    setScanResult,
     clearScanResult
   } = useScannerStore()
 
@@ -163,11 +157,6 @@ export const Home: React.FC = () => {
       }
     }
   }, [scanResult, medications, lang])
-
-  const handleScanComplete = (result: ScanAnalysisResult, previewUrl?: string) => {
-    setScanResult(result, previewUrl)
-    setShowSearchModal(true)
-  }
 
   const loadData = async () => {
     setIsLoading(true)
@@ -281,7 +270,7 @@ export const Home: React.FC = () => {
               whileTap={{ opacity: 0.8 }}
               onClick={(e) => {
                 e.stopPropagation()
-                openScanner()
+                navigate('/scan')
               }}
               title={t.aiScan}
               className="absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-xs transition-colors outline-none focus:outline-none"
@@ -641,7 +630,8 @@ export const Home: React.FC = () => {
               <motion.button
                 whileTap={{ scale: 0.92 }}
                 onClick={() => {
-                  openScanner()
+                  setShowSearchModal(false)
+                  navigate('/scan')
                 }}
                 className="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-xs btn-touch"
               >
@@ -840,12 +830,6 @@ export const Home: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* GEMINI VISION SCANNER MODAL */}
-      <GeminiScannerModal
-        isOpen={isScannerOpen}
-        onClose={closeScanner}
-        onScanComplete={handleScanComplete}
-      />
     </div>
   )
 }
