@@ -23,9 +23,8 @@ export const Header: React.FC = () => {
             <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center p-1.5 shadow-xs shrink-0">
               <PharmaAiIcon className="w-9 h-9 object-contain" />
             </div>
-            <span className="text-xl sm:text-[21px] font-black tracking-tight">
-              <span className="text-neutral-900 dark:text-white">Phar</span>
-              <span className="text-emerald-500 dark:text-emerald-400">mind</span>
+            <span className="text-xl sm:text-[21px] font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 via-neutral-900 via-[52%] to-emerald-500 to-[62%] dark:from-white dark:via-white dark:via-[52%] dark:to-emerald-400 dark:to-[62%]">
+              Pharmind
             </span>
           </div>
 
